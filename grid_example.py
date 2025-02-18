@@ -1,7 +1,7 @@
 from tkinter import Tk, Label, Entry, Button
 
 W = Tk()
-W.title('pack example')
+W.title('grid example')
 W.geometry('400x230')
 W.config(bg='slate gray')
 
