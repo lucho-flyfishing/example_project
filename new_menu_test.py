@@ -1,10 +1,85 @@
-#el orden de los menus es el siguiente: menu3 -> menu2 -> menu1 -> main_menu
+#el orden de los menus es el siguiente: menu3(units) -> menu2(duct_number) -> menu1(filename) -> main_menu
 #cada menu tiene un boton para volver al menu anterior y otro para ir al siguiente menu
 #el menu 1 tiene un boton para guardar el nombre del archivo que se va a crear
 
 
-from tkinter import Tk, Label, Button, Entry, Frame
+from tkinter import Tk, Label, Button, Entry, Frame, IntVar
 
+#function to switch to the velocity range menu
+def velocity_range_menu():
+    #clear the current window
+    for widget in W.winfo_children():
+        widget.destroy()
+    #altitude and temperature menu interface
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    
+    ASHRAE_vel_rec_lbl = Label(top_frame, text='Recomendacion ASHRAE', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    ASHRAE_vel_rec_lbl.pack(side='top', pady=1)
+    
+
+###################################################################################################################################
+
+#function to switch to the altitude and temperature menu
+def altitude_temperature_menu():
+    #clear the current window
+    for widget in W.winfo_children():
+        widget.destroy()
+        
+    #altitude and temperature menu interface
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    
+    alt_temp_lbl = Label(top_frame, text=' Ingrese la altitud y temperatura del \n lugar de la instalación', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    alt_temp_lbl.pack(side='top', pady=1)
+    
+    #middel frame to hold entry fields
+    middle_frame = Frame(W, bg='gray12')
+    middle_frame.pack(expand=True)
+    
+    alt_lbl = Label(middle_frame, text='Altitud (m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+    alt_lbl.grid(row=0, column=0)
+    alt_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+    alt_entry.grid(row=0, column=1)
+    
+    # Placeholder text
+    placeholder = 'Escribe aquí...'
+    alt_entry.insert(0, placeholder)
+
+    # Functions to handle placeholder behavior
+    def on_focus_in(event):
+        if alt_entry.get() == placeholder:
+            alt_entry.delete(0, 'end')
+            alt_entry.config(fg='black')
+
+    def on_focus_out(event):
+        if alt_entry.get() == '':
+            alt_entry.insert(0, placeholder)
+            alt_entry.config(fg='gray')
+
+    # Bind focus events
+    alt_entry.bind('<FocusIn>', on_focus_in)
+    alt_entry.bind('<FocusOut>', on_focus_out)
+
+    # Auto-focus for caret visibility
+    alt_entry.focus()
+    
+    temp_lbl = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+    temp_lbl.grid(row=1, column=0)
+    temp_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+    temp_entry.grid(row=1, column=1)
+    
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+
+    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=branches_features)
+    back_btn_m2.pack (side='left', padx=10, pady=10)
+
+    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=velocity_range_menu)
+    next_btn_m2.pack(side='right' , padx= 10, pady=10)
+
+
+###################################################################################################################################
 
 #function to switch duct features
     
@@ -56,14 +131,16 @@ def branches_features():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=menu3)
+    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=units_menu)
     back_btn_m2.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'))
+    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=altitude_temperature_menu)
     next_btn_m2.pack(side='right' , padx= 10, pady=10)
 
-#function to switch to the menu 3
-def menu3():
+###################################################################################################################################
+
+#function to switch to the units menu
+def units_menu():
     #clear the current window
     for widget in W.winfo_children():
         widget.destroy()
@@ -82,14 +159,39 @@ def menu3():
     unidades_lbl = Label(middle_frame, text='UNIDADES', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
     unidades_lbl.grid(row=0, column=2)
     
-    menu3_opt_1 = Button (middle_frame, text='1. L/s    :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'))
-    menu3_opt_1.grid(row=1, column=2, padx=5, pady=5)
-    
-    menu3_opt_2 = Button (middle_frame, text='2. m^3/s :   Pa/m   : mm : m/S : m ', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'))
-    menu3_opt_2.grid(row=2, column=2, padx=5, pady=5)
-    
-    menu3_opt_3 = Button (middle_frame, text='3. cfm    : inH20/ft : mm : fpm : ft', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'))
-    menu3_opt_3.grid(row=3, column=2, padx=5, pady=5)
+    # Variable to track the selected button (1, 2, or 3)
+    selected_option = IntVar(value=0)
+
+    # Function to update button selection
+    def select_option(value):
+        selected_option.set(value)
+        print(f"Selected option: {value}")
+
+        # Update button colors based on selection
+        for i, btn in enumerate(buttons, start=1):
+            if i == value:
+                btn.config(bg="lightblue")  # Highlight the selected button
+            else:
+                btn.config(bg="DarkSlateGray")  # Reset others to default
+
+    # Create buttons and store them in a list
+    buttons = [
+        Button(middle_frame, text='1. L/s    :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black',
+                relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
+                font=('Arial', 20, 'bold'), command=lambda: select_option(1)),
+
+        Button(middle_frame, text='2. m^3/s :   Pa/m   : mm : m/S : m ', bg='DarkSlateGray', fg='black',
+                relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
+                font=('Arial', 20, 'bold'), command=lambda: select_option(2)),
+
+        Button(middle_frame, text='3. cfm    : inH20/ft : mm : fpm : ft', bg='DarkSlateGray', fg='black',
+                relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
+                font=('Arial', 20, 'bold'), command=lambda: select_option(3))  
+    ]
+
+    # Place buttons in the grid
+    for i, btn in enumerate(buttons, start=1):
+        btn.grid(row=i, column=2, padx=5, pady=5)
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
@@ -101,7 +203,8 @@ def menu3():
     next_btn_m2.pack(side='right' , padx= 10, pady=10)
 
 
-#function to switch to the menu 2
+###################################################################################################################################
+#function to switch to the duct number menu
 
 def duct_number_menu():
     #clear the current window
@@ -155,15 +258,16 @@ def duct_number_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=menu1)
+    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
     back_btn_m2.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=lambda: [save_duct_number(), menu3()])
+    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=lambda: [save_duct_number(), units_menu()])
     next_btn_m2.pack(side='right' , padx= 10, pady=10)
 
+###################################################################################################################################
 
-# menu 1 interface
-def menu1():
+# function to switch to the file name menu
+def file_name_menu():
     # Clear the current window
     for widget in W.winfo_children():
         widget.destroy()
@@ -219,6 +323,8 @@ def menu1():
     next_btn_m1 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=duct_number_menu)
     next_btn_m1.pack(side='right' , padx= 10, pady=10)
 
+
+###################################################################################################################################
 # Function to return to the main menu
 # menu principal
 def main_menu():
@@ -236,7 +342,7 @@ def main_menu():
     lbl3 = Label(W, text='(En los calculos se incluyen las correciones debidas a la altitud, \n temperatura y rugosidad)', font=('Arial', 10), bg='gray12', fg='gray80')
     lbl3.pack(pady=1)
     
-    start_button = Button(W, text='Iniciar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=menu1)
+    start_button = Button(W, text='Iniciar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
     start_button.pack(pady=30)
 
     lbl5 = Label(W, text='Desarrollado en la Universidad del Valle por Luis Jimenez', font=('Arial', 8, 'bold'), bg='gray12', fg='gray80')
