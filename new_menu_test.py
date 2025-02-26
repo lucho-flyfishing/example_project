@@ -69,13 +69,19 @@ def altitude_temperature_menu():
     temp_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
     temp_entry.grid(row=1, column=1)
     
+    # Function to get values from entry fields
+    def get_values():
+        get_alt = alt_entry.get()
+        get_temp = temp_entry.get()
+        print(f"Altitude: {get_alt}, Temperature: {get_temp}")  # Print values to check
+    
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
     back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=branches_features)
     back_btn_m2.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=velocity_range_menu)
+    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [get_values(), velocity_range_menu()])
     next_btn_m2.pack(side='right' , padx= 10, pady=10)
 
 
