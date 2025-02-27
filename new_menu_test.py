@@ -1,9 +1,114 @@
-#el orden de los menus es el siguiente: menu3(units) -> menu2(duct_number) -> menu1(filename) -> main_menu
+#el orden de el codigo  es el siguiente: settings_menu3(units) -> menu2(duct_number) -> menu1(filename) -> main_menu
 #cada menu tiene un boton para volver al menu anterior y otro para ir al siguiente menu
 #el menu 1 tiene un boton para guardar el nombre del archivo que se va a crear
 
 
 from tkinter import Tk, Label, Button, Entry, Frame, IntVar
+
+from tkinter import *
+
+class AppState:
+    def __init__(self, root):
+        self.selected_option = IntVar(root)  # Attach variable to Tkinter root(que los valores de las varibles se guarden para utilizarlos en otras funciones)
+
+
+W = Tk()
+W.title('Dimensionamiento de Ductos')
+W.geometry('600x600')
+W.config(bg='gray12')
+
+app_state = AppState(W)
+
+###################################################################################################################################
+
+#function to switch to the velocity range menu
+def results1_menu():
+    #clear the current window
+    for widget in W.winfo_children():
+        widget.destroy()
+        
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    
+    pre_result_main = Label(top_frame, text='Dimensionamiento preliminar del ramal principal', font=('Arial', 25), bg='gray12', fg='gray80')
+    pre_result_main.pack(side='top', pady=1)
+
+    middle_frame = Frame(W, bg='gray12')
+    middle_frame.pack(expand=True)
+    
+    #this if statement is meant to display the results of the selected option of units
+    
+    selected =  app_state.selected_option.get()
+    
+    print(f"Selected option: {selected}")
+
+    if selected == 1:
+        flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        flowrate_main.grid(row=0, column=0)
+        
+        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        temperatue_main.grid(row=1, column=0)
+        
+        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        preasure_main.grid(row=2, column=0)
+        
+        velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        velocity_main.grid(row=3, column=0)       
+        
+        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        friction_loses_main.grid(row=4, column=0)
+        
+        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        diameter_main.grid(row=5, column=0)       
+        
+    elif selected == 2:
+        flowrate_main = Label(middle_frame, text='Caudal (m^3/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        flowrate_main.grid(row=0, column=0)
+        
+        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        temperatue_main.grid(row=1, column=0)
+        
+        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        preasure_main.grid(row=2, column=0)
+        
+        velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        velocity_main.grid(row=3, column=0)       
+        
+        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        friction_loses_main.grid(row=4, column=0)
+        
+        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        diameter_main.grid(row=5, column=0) 
+        
+    elif selected == 3:
+        flowrate_main = Label(middle_frame, text='Caudal (cfm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        flowrate_main.grid(row=0, column=0)
+        
+        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        temperatue_main.grid(row=1, column=0)
+        
+        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        preasure_main.grid(row=2, column=0)
+        
+        velocity_main = Label(middle_frame, text='Velocidad (fpm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        velocity_main.grid(row=3, column=0)       
+        
+        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (inH20/ft)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        friction_loses_main.grid(row=4, column=0)
+        
+        diameter_main = Label(middle_frame, text='Diametro (in)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        diameter_main.grid(row=5, column=0) 
+    
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+    
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=velocity_range_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
+
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'))
+    next_btn.pack(side='right' , padx= 10, pady=10)
+    
+###################################################################################################################################
 
 #function to switch to the velocity range menu
 def velocity_range_menu():
@@ -17,6 +122,14 @@ def velocity_range_menu():
     ASHRAE_vel_rec_lbl = Label(top_frame, text='Recomendacion ASHRAE', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
     ASHRAE_vel_rec_lbl.pack(side='top', pady=1)
     
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=altitude_temperature_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
+
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=results1_menu)
+    next_btn.pack(side='right' , padx= 10, pady=10)
 
 ###################################################################################################################################
 
@@ -30,7 +143,7 @@ def altitude_temperature_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    alt_temp_lbl = Label(top_frame, text=' Ingrese la altitud y temperatura del \n lugar de la instalación', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    alt_temp_lbl = Label(top_frame, text=' Ingrese la altitud y temperatura del \n lugar de la instalación', font=('Arial', 24), bg='gray12', fg='gray80')
     alt_temp_lbl.pack(side='top', pady=1)
     
     #middel frame to hold entry fields
@@ -78,11 +191,11 @@ def altitude_temperature_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=branches_features)
-    back_btn_m2.pack (side='left', padx=10, pady=10)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=branches_features)
+    back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [get_values(), velocity_range_menu()])
-    next_btn_m2.pack(side='right' , padx= 10, pady=10)
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [get_values(), velocity_range_menu()])
+    next_btn.pack(side='right' , padx= 10, pady=10)
 
 
 ###################################################################################################################################
@@ -105,7 +218,7 @@ def branches_features():
     for widget in W.winfo_children():
         widget.destroy()
 
-    Label(W, text="Ingrese los valores de cada ramal", font=('Arial', 16, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
+    Label(W, text="Ingrese los valores de caudal y y longitud de ramal", font=('Arial', 16, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
 
     # Frame to hold entry fields
     middle_frame = Frame(W, bg='grey12')
@@ -129,20 +242,15 @@ def branches_features():
         length_entry = Entry(middle_frame, font=('Arial', 12), width=10)
         length_entry.grid(row=i+1, column=2, padx=5, pady=5)
         length_entries.append(length_entry)
-
-    # Save Button
-    save_btn = Button(W, text="Guardar y Continuar", bg="DarkSlateGray", fg="black", font=('Arial', 14, 'bold'),command=save_branch_data)
-    save_btn.pack(pady=10)
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=units_menu)
-    back_btn_m2.pack (side='left', padx=10, pady=10)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=units_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=altitude_temperature_menu)
-    next_btn_m2.pack(side='right' , padx= 10, pady=10)
-
+    save_btn = Button(bottom_frame, text="Guardar y Continuar", bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold') ,command= lambda: [save_branch_data(),altitude_temperature_menu()])
+    save_btn.pack (side ='right', padx=10, pady=10)
 ###################################################################################################################################
 
 #function to switch to the units menu
@@ -155,8 +263,11 @@ def units_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    menu3_lbl = Label(top_frame, text='El programa permite escoger entre tres sistemas \n de unidades, selecione las unidades para: caudal, \n perdidas, diametro y  velocidad respectivamente', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    menu3_lbl = Label(top_frame, text='El programa permite escoger entre tres sistemas \n de unidades, selecione las unidades para: caudal, \n perdidas, diametro y  velocidad respectivamente', font=('Arial', 24), bg='gray12', fg='gray80')
     menu3_lbl.pack(side='top', pady=1)
+    
+    guide_lbl = Label(top_frame, text='(haga clic en una de las opciones, luego presione siguiente)', font=('Arial', 15), bg='gray12', fg='gray80')
+    guide_lbl.pack(side='top', pady=1)
     
     #selecion de unidades
     middle_frame = Frame(W, bg='gray12')
@@ -164,13 +275,10 @@ def units_menu():
     
     unidades_lbl = Label(middle_frame, text='UNIDADES', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
     unidades_lbl.grid(row=0, column=2)
-    
-    # Variable to track the selected button (1, 2, or 3)
-    selected_option = IntVar(value=0)
 
     # Function to update button selection
     def select_option(value):
-        selected_option.set(value)
+        app_state.selected_option.set(value)
         print(f"Selected option: {value}")
 
         # Update button colors based on selection
@@ -186,11 +294,11 @@ def units_menu():
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(1)),
 
-        Button(middle_frame, text='2. m^3/s :   Pa/m   : mm : m/S : m ', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='2. m^3/s :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(2)),
 
-        Button(middle_frame, text='3. cfm    : inH20/ft : mm : fpm : ft', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='3. cfm    : inH20/ft : in : fpm : ft', bg='DarkSlateGray', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(3))  
     ]
@@ -202,11 +310,11 @@ def units_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=duct_number_menu)
-    back_btn_m2.pack (side='left', padx=10, pady=10)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=duct_number_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'),  command=branches_features)
-    next_btn_m2.pack(side='right' , padx= 10, pady=10)
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'),  command=branches_features)
+    next_btn.pack(side='right' , padx= 10, pady=10)
 
 
 ###################################################################################################################################
@@ -218,7 +326,7 @@ def duct_number_menu():
         widget.destroy()
     
     # Entry for duct number
-    duct_number_lbl = Label(W, text='Introduzca la cantidad de ramales del ducto, luego \n presione siguiente:', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    duct_number_lbl = Label(W, text='Introduzca la cantidad de ramales del ducto, luego \n presione siguiente:', font=('Arial', 24), bg='gray12', fg='gray80')
     duct_number_lbl.pack(pady=1)
 
     duct_number_entry = Entry(W, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
@@ -264,11 +372,11 @@ def duct_number_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m2 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
-    back_btn_m2.pack (side='left', padx=10, pady=10)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn_m2 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=lambda: [save_duct_number(), units_menu()])
-    next_btn_m2.pack(side='right' , padx= 10, pady=10)
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=lambda: [save_duct_number(), units_menu()])
+    next_btn.pack(side='right' , padx= 10, pady=10)
 
 ###################################################################################################################################
 
@@ -281,7 +389,7 @@ def file_name_menu():
     # New Menu Interface
     
     # Entry for file name
-    file_name_lbl = Label(W, text='El programa va a crear un archivo con los \n resultados, introduzca el nombre con el que \n quiere guardar el archivo, luego presione siguiente:', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    file_name_lbl = Label(W, text='El programa va a crear un archivo con los \n resultados, introduzca el nombre con el que \n quiere guardar el archivo, luego presione siguiente:', font=('Arial', 24), bg='gray12', fg='gray80')
     file_name_lbl.pack(pady=1)  
 
     file_name_entry = Entry(W, font=('Arial', 12), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
@@ -323,11 +431,11 @@ def file_name_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn_m1 = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=main_menu)
-    back_btn_m1.pack(side='left', padx=10, pady=10)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=main_menu)
+    back_btn.pack(side='left', padx=10, pady=10)
 
-    next_btn_m1 = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=duct_number_menu)
-    next_btn_m1.pack(side='right' , padx= 10, pady=10)
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=duct_number_menu)
+    next_btn.pack(side='right' , padx= 10, pady=10)
 
 
 ###################################################################################################################################
@@ -354,20 +462,6 @@ def main_menu():
     lbl5 = Label(W, text='Desarrollado en la Universidad del Valle por Luis Jimenez', font=('Arial', 8, 'bold'), bg='gray12', fg='gray80')
     lbl5.pack(side='bottom', pady=1)
 
-# Main Window Setup
-try:
-    for widget in Tk._default_root.winfo_children():
-        widget.destroy()
-    Tk._default_root.destroy()
-except AttributeError:
-    pass
-
-W = Tk()
-W.title('Dimensionamiento de Ductos')
-W.geometry('600x600')
-W.config(bg='gray12')
-
-# Load the main menu initially
 main_menu()
 
 W.mainloop()
