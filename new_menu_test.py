@@ -5,8 +5,6 @@
 
 from tkinter import Tk, Label, Button, Entry, Frame, IntVar
 
-from tkinter import *
-
 class AppState:
     def __init__(self, root):
         self.selected_option = IntVar(root)  # Attach variable to Tkinter root(que los valores de las varibles se guarden para utilizarlos en otras funciones)
@@ -62,7 +60,7 @@ def results1_menu():
         diameter_main.grid(row=5, column=0)       
         
     elif selected == 2:
-        flowrate_main = Label(middle_frame, text='Caudal (m^3/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        flowrate_main = Label(middle_frame, text='Caudal (m³/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
         flowrate_main.grid(row=0, column=0)
         
         temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
@@ -133,6 +131,71 @@ def velocity_range_menu():
 
 ###################################################################################################################################
 
+#function to switch duct features
+    
+branch_data = {}
+
+def save_branch_data():
+    """Save the flow rate and length for each branch."""
+    for i in range(duct_number):
+        branch_data[f'branch{i+1}_flowrate'] = flowrate_entries[i].get()
+        branch_data[f'branch{i+1}_length'] = length_entries[i].get()
+
+    print(branch_data)  # Debugging: Print saved values
+
+def branches_features():
+    """Create a menu with input fields for flow rate and length of each branch."""
+    global middle_frame, flowrate_entries, length_entries
+    for widget in W.winfo_children():
+        widget.destroy()
+
+    Label(W, text="Ingrese los valores de caudal y longitud de ramal", font=('Arial', 16, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
+    
+    selected =  app_state.selected_option.get()
+    
+    # Frame to hold entry fields
+    middle_frame = Frame(W, bg='grey12')
+    middle_frame.pack(pady=10)
+
+    flowrate_entries = []
+    length_entries = []
+
+    # Header Labels
+    if selected == 1:
+        Label(middle_frame, text="Caudal (L/s)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
+        Label(middle_frame, text="Longitud (m)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
+    
+    elif selected == 2:
+        Label(middle_frame, text="Caudal (m³/h)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
+        Label(middle_frame, text="Longitud (m)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
+    
+    elif selected == 3:
+        Label(middle_frame, text="Caudal (cfm)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
+        Label(middle_frame, text="Longitud (ft)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
+    
+
+    # Create input fields for each branch
+    for i in range(duct_number):
+        Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 12), bg='grey12', fg='white').grid(row=i+1, column=0, padx=5, pady=5)
+        
+        flowrate_entry = Entry(middle_frame, font=('Arial', 12), width=10)
+        flowrate_entry.grid(row=i+1, column=1, padx=5, pady=5)
+        flowrate_entries.append(flowrate_entry)
+
+        length_entry = Entry(middle_frame, font=('Arial', 12), width=10)
+        length_entry.grid(row=i+1, column=2, padx=5, pady=5)
+        length_entries.append(length_entry)
+    
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=altitude_temperature_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
+
+    save_btn = Button(bottom_frame, text="Guardar y Continuar", bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold') ,command= lambda: [save_branch_data(),velocity_range_menu()])
+    save_btn.pack (side ='right', padx=10, pady=10)
+###################################################################################################################################
+
 #function to switch to the altitude and temperature menu
 def altitude_temperature_menu():
     #clear the current window
@@ -191,68 +254,14 @@ def altitude_temperature_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=branches_features)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=units_menu)
     back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [get_values(), velocity_range_menu()])
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [get_values(), branches_features()])
     next_btn.pack(side='right' , padx= 10, pady=10)
 
 
 ###################################################################################################################################
-
-#function to switch duct features
-    
-branch_data = {}
-
-def save_branch_data():
-    """Save the flow rate and length for each branch."""
-    for i in range(duct_number):
-        branch_data[f'branch{i+1}_flowrate'] = flowrate_entries[i].get()
-        branch_data[f'branch{i+1}_length'] = length_entries[i].get()
-
-    print(branch_data)  # Debugging: Print saved values
-
-def branches_features():
-    """Create a menu with input fields for flow rate and length of each branch."""
-    global middle_frame, flowrate_entries, length_entries
-    for widget in W.winfo_children():
-        widget.destroy()
-
-    Label(W, text="Ingrese los valores de caudal y y longitud de ramal", font=('Arial', 16, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
-
-    # Frame to hold entry fields
-    middle_frame = Frame(W, bg='grey12')
-    middle_frame.pack(pady=10)
-
-    flowrate_entries = []
-    length_entries = []
-
-    # Header Labels
-    Label(middle_frame, text="Caudal (m³/h)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
-    Label(middle_frame, text="Longitud (m)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
-
-    # Create input fields for each branch
-    for i in range(duct_number):
-        Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 12), bg='DarkSlateGray', fg='white').grid(row=i+1, column=0, padx=5, pady=5)
-        
-        flowrate_entry = Entry(middle_frame, font=('Arial', 12), width=10)
-        flowrate_entry.grid(row=i+1, column=1, padx=5, pady=5)
-        flowrate_entries.append(flowrate_entry)
-
-        length_entry = Entry(middle_frame, font=('Arial', 12), width=10)
-        length_entry.grid(row=i+1, column=2, padx=5, pady=5)
-        length_entries.append(length_entry)
-    
-    bottom_frame = Frame(W, bg='gray12')
-    bottom_frame.pack(side='bottom', fill='x')
-
-    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=units_menu)
-    back_btn.pack (side='left', padx=10, pady=10)
-
-    save_btn = Button(bottom_frame, text="Guardar y Continuar", bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold') ,command= lambda: [save_branch_data(),altitude_temperature_menu()])
-    save_btn.pack (side ='right', padx=10, pady=10)
-###################################################################################################################################
-
 #function to switch to the units menu
 def units_menu():
     #clear the current window
@@ -294,7 +303,7 @@ def units_menu():
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(1)),
 
-        Button(middle_frame, text='2. m^3/s :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='2. m³/s :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(2)),
 
@@ -313,7 +322,7 @@ def units_menu():
     back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=duct_number_menu)
     back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'),  command=branches_features)
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'),  command=altitude_temperature_menu)
     next_btn.pack(side='right' , padx= 10, pady=10)
 
 
