@@ -2,7 +2,8 @@
 #cada menu tiene un boton para volver al menu anterior y otro para ir al siguiente menu
 #el menu 1 tiene un boton para guardar el nombre del archivo que se va a crear
 
-
+###################################################################################################################################
+#setttings and libraries
 from tkinter import Tk, Label, Button, Entry, Frame, IntVar
 
 class AppState:
@@ -19,8 +20,46 @@ app_state = AppState(W)
 
 ###################################################################################################################################
 
-#function to switch to the velocity range menu
-def results1_menu():
+#function to switch corrections menu
+def corrections_menu():
+    #clear the current window
+    for widget in W.winfo_children():
+        widget.destroy()
+
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    
+    corrections_lbl = Label(top_frame, text='Menu de correcciones', font=('Arial', 25), bg='gray12', fg='gray80')
+    corrections_lbl.pack(side='top', pady=1)
+    
+    middle_frame = Frame(W, bg='gray12')
+    middle_frame.pack(expand=True)
+    
+    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    ruogosity_btn.pack(padx=5, pady=5, anchor="w", fill="x")
+    
+    rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    rectangular_eq_btn.pack(padx=5, pady=5, anchor="w", fill="x")
+    
+    pre_desing_btn = Button(middle_frame, text='Volver a hacer el diimensionamiento preliminar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    pre_desing_btn.pack(padx=5, pady=5, anchor="w", fill="x")
+    
+    show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    show_results_btn.pack(padx=5, pady=5, anchor="w", fill="x")
+    
+    accesories_btn = Button(middle_frame, text='Calcular Accesorios', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    accesories_btn.pack(padx=5, pady=5, anchor="w", fill="x")
+    
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+    
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=result1_menu)
+    back_btn.pack (side='left', padx=10, pady=10)   
+    
+
+###################################################################################################################################
+#function to switch to the results
+def result1_menu():
     #clear the current window
     for widget in W.winfo_children():
         widget.destroy()
@@ -28,7 +67,7 @@ def results1_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    pre_result_main = Label(top_frame, text='Dimensionamiento preliminar del ramal principal', font=('Arial', 25), bg='gray12', fg='gray80')
+    pre_result_main = Label(top_frame, text='Dimensionamiento preliminar', font=('Arial', 25), bg='gray12', fg='gray80')
     pre_result_main.pack(side='top', pady=1)
 
     middle_frame = Frame(W, bg='gray12')
@@ -100,10 +139,10 @@ def results1_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
     
-    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=velocity_range_menu)
-    back_btn.pack (side='left', padx=10, pady=10)
-
-    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'))
+    try_another_speed = Button (bottom_frame, text='Intentar con otra velocidad', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=velocity_range_menu) 
+    try_another_speed.pack(side='left', padx=10, pady=10)
+    
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'),  command=corrections_menu)
     next_btn.pack(side='right' , padx= 10, pady=10)
     
 ###################################################################################################################################
@@ -123,10 +162,10 @@ def velocity_range_menu():
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
-    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=altitude_temperature_menu)
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=branches_features)
     back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=results1_menu)
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=result1_menu)
     next_btn.pack(side='right' , padx= 10, pady=10)
 
 ###################################################################################################################################
@@ -172,8 +211,7 @@ def branches_features():
     elif selected == 3:
         Label(middle_frame, text="Caudal (cfm)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
         Label(middle_frame, text="Longitud (ft)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
-    
-
+        
     # Create input fields for each branch
     for i in range(duct_number):
         Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 12), bg='grey12', fg='white').grid(row=i+1, column=0, padx=5, pady=5)
@@ -185,6 +223,28 @@ def branches_features():
         length_entry = Entry(middle_frame, font=('Arial', 12), width=10)
         length_entry.grid(row=i+1, column=2, padx=5, pady=5)
         length_entries.append(length_entry)
+        
+    # Placeholder text
+    placeholder = 'Escribe aquí...'
+    flowrate_entry.insert(0, placeholder)
+
+    # Functions to handle placeholder behavior
+    def on_focus_in(event):
+        if flowrate_entry.get() == placeholder:
+            flowrate_entry.delete(0, 'end')
+            flowrate_entry.config(fg='white')
+
+    def on_focus_out(event):
+        if flowrate_entry.get() == '':
+            flowrate_entry.insert(0, placeholder)
+            flowrate_entry.config(fg='gray')
+
+    # Bind focus events
+    flowrate_entry.bind('<FocusIn>', on_focus_in)
+    flowrate_entry.bind('<FocusOut>', on_focus_out)
+
+    # Auto-focus for caret visibility
+    flowrate_entry.focus()
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
@@ -307,14 +367,14 @@ def units_menu():
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(2)),
 
-        Button(middle_frame, text='3. cfm    : inH20/ft : in : fpm : ft', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='3. cfm   : inH20/ft : in : fpm : ft', bg='DarkSlateGray', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(3))  
     ]
 
     # Place buttons in the grid
     for i, btn in enumerate(buttons, start=1):
-        btn.grid(row=i, column=2, padx=5, pady=5)
+        btn.grid(row=i, column=2, padx=5, pady=10, sticky='ew')
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
