@@ -273,10 +273,31 @@ def altitude_temperature_menu():
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
-    alt_lbl = Label(middle_frame, text='Altitud (m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-    alt_lbl.grid(row=0, column=0)
-    alt_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
-    alt_entry.grid(row=0, column=1)
+    selected = app_state.selected_option.get()
+    
+    if selected == 3:
+
+        temp_lbl = Label(middle_frame, text='Temperatura (F°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        temp_lbl.grid(row=1, column=0)
+        temp_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+        temp_entry.grid(row=1, column=1)
+    
+        alt_lbl = Label(middle_frame, text='Altitud (ft)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        alt_lbl.grid(row=0, column=0)
+        alt_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+        alt_entry.grid(row=0, column=1)
+    
+    else:
+        temp_lbl = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        temp_lbl.grid(row=1, column=0)
+        temp_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+        temp_entry.grid(row=1, column=1)
+    
+        alt_lbl = Label(middle_frame, text='Altitud (m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
+        alt_lbl.grid(row=0, column=0)
+        alt_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+        alt_entry.grid(row=0, column=1)       
+    
     
     # Placeholder text
     placeholder = 'Escribe aquí...'
@@ -299,11 +320,6 @@ def altitude_temperature_menu():
 
     # Auto-focus for caret visibility
     alt_entry.focus()
-    
-    temp_lbl = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-    temp_lbl.grid(row=1, column=0)
-    temp_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
-    temp_entry.grid(row=1, column=1)
     
     # Function to get values from entry fields
     def get_values():
@@ -367,7 +383,7 @@ def units_menu():
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(2)),
 
-        Button(middle_frame, text='3. cfm   : inH20/ft : in : fpm : ft', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='3. cfm    : inH20/ft : in : fpm : ft', bg='DarkSlateGray', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(3))  
     ]
