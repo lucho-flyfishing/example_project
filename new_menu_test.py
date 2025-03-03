@@ -9,7 +9,9 @@ from tkinter import Tk, Label, Button, Entry, Frame, IntVar
 class AppState:
     def __init__(self, root):
         self.selected_option = IntVar(root)  # Attach variable to Tkinter root(que los valores de las varibles se guarden para utilizarlos en otras funciones)
-
+        self.duct_number = IntVar(root)  # Attach variable to Tkinter root
+        self.flowrate_entries = []  # Stores flow rates
+        self.length_entries = []  # Stores lengths
 
 W = Tk()
 W.title('Dimensionamiento de Ductos')
@@ -70,71 +72,80 @@ def result1_menu():
     pre_result_main = Label(top_frame, text='Dimensionamiento preliminar', font=('Arial', 25), bg='gray12', fg='gray80')
     pre_result_main.pack(side='top', pady=1)
 
-    middle_frame = Frame(W, bg='gray12')
+    middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
     middle_frame.pack(expand=True)
     
-    #this if statement is meant to display the results of the selected option of units
+    #this if statement is meant to display the results of the selected option of units and the duct number
     
     selected =  app_state.selected_option.get()
+    rows_number = app_state.duct_number.get()
     
     print(f"Selected option: {selected}")
+    print(f"Duct number: {rows_number}")
+    rows, cols = rows_number, 6
+
+    # Create a visible grid with borders
+    for i in range(rows):
+            ramal_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            ramal_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
 
     if selected == 1:
-        flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        flowrate_main.grid(row=0, column=0)
+        flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        flowrate_main.grid(row=0, column=1)
         
-        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        temperatue_main.grid(row=1, column=0)
+        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        temperatue_main.grid(row=0, column=2)
         
-        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        preasure_main.grid(row=2, column=0)
+        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main.grid(row=0, column=3)
         
-        velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        velocity_main.grid(row=3, column=0)       
+        velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        velocity_main.grid(row=0, column=4)       
         
-        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        friction_loses_main.grid(row=4, column=0)
+        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        friction_loses_main.grid(row=0, column=5)
         
-        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        diameter_main.grid(row=5, column=0)       
+        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        diameter_main.grid(row=0, column=6)       
         
     elif selected == 2:
-        flowrate_main = Label(middle_frame, text='Caudal (m³/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        flowrate_main.grid(row=0, column=0)
+        flowrate_main = Label(middle_frame, text='Caudal (m³/s)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        flowrate_main.grid(row=0, column=1)
         
-        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        temperatue_main.grid(row=1, column=0)
+        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        temperatue_main.grid(row=0, column=2)
         
-        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        preasure_main.grid(row=2, column=0)
+        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main.grid(row=0, column=3)
         
-        velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        velocity_main.grid(row=3, column=0)       
+        velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        velocity_main.grid(row=0, column=4)       
         
-        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        friction_loses_main.grid(row=4, column=0)
+        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        friction_loses_main.grid(row=0, column=5)
         
-        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        diameter_main.grid(row=5, column=0) 
+        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        diameter_main.grid(row=0, column=6) 
         
     elif selected == 3:
-        flowrate_main = Label(middle_frame, text='Caudal (cfm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        flowrate_main.grid(row=0, column=0)
+        flowrate_main = Label(middle_frame, text='Caudal (cfm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        flowrate_main.grid(row=0, column=1)
         
-        temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        temperatue_main.grid(row=1, column=0)
+        temperatue_main = Label(middle_frame, text='Temperatura (F°)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        temperatue_main.grid(row=0, column=2)
         
-        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        preasure_main.grid(row=2, column=0)
+        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main.grid(row=0, column=3)
         
-        velocity_main = Label(middle_frame, text='Velocidad (fpm)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        velocity_main.grid(row=3, column=0)       
+        velocity_main = Label(middle_frame, text='Velocidad (fpm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        velocity_main.grid(row=0, column=4)       
         
-        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (inH20/ft)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        friction_loses_main.grid(row=4, column=0)
+        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (inH20/ft)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        friction_loses_main.grid(row=0, column=5)
         
-        diameter_main = Label(middle_frame, text='Diametro (in)', font=('Arial', 25, 'bold'), bg='gray12', fg='gray80')
-        diameter_main.grid(row=5, column=0) 
+        diameter_main = Label(middle_frame, text='Diametro (in)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        diameter_main.grid(row=0, column=6) 
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
@@ -170,18 +181,26 @@ def velocity_range_menu():
 
 ###################################################################################################################################
 
-#function to switch duct features
-    
-branch_data = {}
-
+# Function to save flow rate and length values to app_state
 def save_branch_data():
-    """Save the flow rate and length for each branch."""
-    for i in range(duct_number):
-        branch_data[f'branch{i+1}_flowrate'] = flowrate_entries[i].get()
-        branch_data[f'branch{i+1}_length'] = length_entries[i].get()
+    """Save the flow rate and length for each branch in app_state."""
+    app_state.flowrate_entries = []  # Reset stored values
+    app_state.length_entries = []
 
-    print(branch_data)  # Debugging: Print saved values
+    for i in range(app_state.duct_number.get()):
+        try:
+            flowrate = float(flowrate_entries[i].get())  # Convert input to float
+            length = float(length_entries[i].get())
 
+            app_state.flowrate_entries.append(flowrate)
+            app_state.length_entries.append(length)
+        except ValueError:
+            print(f"Error: Ingrese valores válidos en el Ramal {i+1}")
+
+    print("Caudales guardados:", app_state.flowrate_entries)
+    print("Longitudes guardadas:", app_state.length_entries)
+
+# Function to create the menu for branch features
 def branches_features():
     """Create a menu with input fields for flow rate and length of each branch."""
     global middle_frame, flowrate_entries, length_entries
@@ -189,42 +208,44 @@ def branches_features():
         widget.destroy()
 
     Label(W, text="Ingrese los valores de caudal y longitud de ramal", font=('Arial', 16, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
-    
-    selected =  app_state.selected_option.get()
-    
+
+    selected = app_state.selected_option.get()
+    duct_number = app_state.duct_number.get()
+
     # Frame to hold entry fields
     middle_frame = Frame(W, bg='grey12')
     middle_frame.pack(pady=10)
 
+    app_state.flowrate_entries = []  # Reset stored values
+    app_state.length_entries = []
+
+    # Header Labels
+    headers = {
+        1: ("Caudal (L/s)", "Longitud (m)"),
+        2: ("Caudal (m³/h)", "Longitud (m)"),
+        3: ("Caudal (cfm)", "Longitud (ft)")
+    }
+    
+    if selected in headers:
+        Label(middle_frame, text=headers[selected][0], font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
+        Label(middle_frame, text=headers[selected][1], font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
+
+    # Create input fields for each branch
     flowrate_entries = []
     length_entries = []
 
-    # Header Labels
-    if selected == 1:
-        Label(middle_frame, text="Caudal (L/s)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
-        Label(middle_frame, text="Longitud (m)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
-    
-    elif selected == 2:
-        Label(middle_frame, text="Caudal (m³/h)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
-        Label(middle_frame, text="Longitud (m)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
-    
-    elif selected == 3:
-        Label(middle_frame, text="Caudal (cfm)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
-        Label(middle_frame, text="Longitud (ft)", font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
-        
-    # Create input fields for each branch
     for i in range(duct_number):
         Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 12), bg='grey12', fg='white').grid(row=i+1, column=0, padx=5, pady=5)
-        
-        flowrate_entry = Entry(middle_frame, font=('Arial', 12), width=10)
+
+        flowrate_entry = Entry(middle_frame, font=('Arial', 12), bg='grey40', width=10)
         flowrate_entry.grid(row=i+1, column=1, padx=5, pady=5)
         flowrate_entries.append(flowrate_entry)
 
-        length_entry = Entry(middle_frame, font=('Arial', 12), width=10)
+        length_entry = Entry(middle_frame, font=('Arial', 12), bg='grey40' , width=10)
         length_entry.grid(row=i+1, column=2, padx=5, pady=5)
         length_entries.append(length_entry)
-        
-    # Placeholder text
+    
+        # Placeholder text
     placeholder = 'Escribe aquí...'
     flowrate_entry.insert(0, placeholder)
 
@@ -232,7 +253,7 @@ def branches_features():
     def on_focus_in(event):
         if flowrate_entry.get() == placeholder:
             flowrate_entry.delete(0, 'end')
-            flowrate_entry.config(fg='white')
+            flowrate_entry.config(fg='black')
 
     def on_focus_out(event):
         if flowrate_entry.get() == '':
@@ -245,7 +266,7 @@ def branches_features():
 
     # Auto-focus for caret visibility
     flowrate_entry.focus()
-    
+        
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
@@ -439,20 +460,19 @@ def duct_number_menu():
     # Auto-focus for caret visibility
     duct_number_entry.focus()
 
-    # Function to save duct number
+    # Function to save duct number using app_state
     def save_duct_number():
-        global duct_number
-        duct_number = duct_number_entry.get()
-    
-        if duct_number == duct_number_placeholder:
-            duct_number = ''  # Avoid saving placeholder as file name
+        value = duct_number_entry.get()  # Get the user input
+
+        if value == duct_number_placeholder:
+            app_state.duct_number.set(0)  # Avoid saving placeholder
         else:
             try:
-                duct_number = int(duct_number)  # Convert to integer
+                app_state.duct_number.set(int(value))  # Convert and store in app_state
             except ValueError:
-                print("Error: Ingrese un número válido")  # Handle non-numeric input
+                print("Error: Ingrese un número válido")  # Handle invalid input
 
-        print(f'el número de ductos es: {duct_number}')  # Verify it's working
+        print(f'El número de ductos es: {app_state.duct_number.get()}')  # Verify it's working
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
