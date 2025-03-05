@@ -9,7 +9,7 @@ from tkinter import Tk, Label, Button, Entry, Frame, IntVar
 class AppState:
     def __init__(self, root):
         self.selected_option = IntVar(root)  # Attach variable to Tkinter root(que los valores de las varibles se guarden para utilizarlos en otras funciones)
-        self.duct_number = IntVar(root)  # Attach variable to Tkinter root
+        self.duct_number = IntVar(root)  # Store the number of ducts
         self.flowrate_entries = []  # Stores flow rates
         self.length_entries = []  # Stores lengths
 
@@ -79,17 +79,34 @@ def result1_menu():
     
     selected =  app_state.selected_option.get()
     rows_number = app_state.duct_number.get()
+    #####(usar este for para mostrar los valores de caudal y longitud de cada ramal)
+    #for i, (flow, length) in enumerate(zip(app_state.flowrate_values, app_state.length_values), start=1):
+        #Label(W, text=f'Ramal {i}: Caudal = {flow}, Longitud = {length}', font=('Arial', 12), bg='grey12', fg='white').pack(pady=5)
     
     print(f"Selected option: {selected}")
     print(f"Duct number: {rows_number}")
     rows, cols = rows_number, 6
+    
+    flowrate_range = app_state.flowrate_entries
+    #length_range = AppState.length_entries = []
 
-    # Create a visible grid with borders
+    # Values of each branch
     for i in range(rows):
-            ramal_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
+            branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
-            ramal_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
-
+            branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
+    
+    for i in range(len(flowrate_range)):
+            flow_value = flowrate_range[i]  # Get the entered text from Entry
+            branch_flow_values = Label(middle_frame, text=f"{flow_value}", width=7, height=1, 
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            branch_flow_values.grid(row=i+1, column=1, padx=2, pady=2, sticky="nsew")
+    
+    #for i in range(len(length_range)):
+            #branch_length_values = Label(middle_frame, text=f"{length_range[i+1]}", width=7, height=1, 
+                            #borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            #branch_length_values.grid(row=i+1, column=2, padx=2, pady=2, sticky="nsew")
+    
     if selected == 1:
         flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         flowrate_main.grid(row=0, column=1)
