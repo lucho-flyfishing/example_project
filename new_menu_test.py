@@ -90,16 +90,37 @@ def result1_menu():
     print(f"Duct number: {rows_number}")
     rows, cols = rows_number, 6
     
+    #function that calculates the pressure at a given altitude
+    def calculate_pressure(H):
+        # Constants
+        P0 = 101325  # Sea-level standard atmospheric pressure (Pa)
+        factor = 0.0000225577  # Altitude factor
+        exponent = 5.2559  # Exponent for the equation
+    
+        # Pressure formula
+        P = P0 * (1 - factor * H) ** exponent
+    
+        return P
+        
+    # set the altitude to the value of the entry
+    H = float(app_state.get_alt)
+    # Calculate pressure
+    pressure = calculate_pressure(H)
+
+    # Print result
+    print(f"Atmospheric pressure at {H:.2f} m is {pressure:.2f} Pa")
+    
+    #variables to get the values of the flowrate and length
     flowrate_range = app_state.flowrate_entries
     length_range = app_state.length_entries
 
-    # Values of each branch
+    # Number of each branch
     for i in range(rows):
             branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
     
-    #these 2 for statemnts shows the value of the flowrate and length the correctos units are shown in the below if statement
+    #these for statemnts shows the value of the flowrate, length and pressure; the correct units to display are set in the below if statement.
     for i in range(len(flowrate_range)):
             flow_value = flowrate_range[i]  # Get the entered text from Entry
             branch_flow_values = Label(middle_frame, text=f"{flow_value}", width=7, height=1, 
@@ -111,6 +132,11 @@ def result1_menu():
             branch_length_values = Label(middle_frame, text=f"{length_value}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_length_values.grid(row=i+1, column=2, padx=2, pady=2, sticky="nsew")
+    
+    for i in range(rows):
+            branch_pressure_values = Label(middle_frame, text=f"{pressure:.2f}", width=7, height=1, 
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            branch_pressure_values.grid(row=i+1, column=4, padx=2, pady=2, sticky="nsew")
     
     if selected == 1:
         flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
