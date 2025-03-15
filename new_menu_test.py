@@ -23,6 +23,90 @@ W.config(bg='gray12')
 app_state = AppState(W)
 
 ###################################################################################################################################
+#function to switch to rugosity menu
+def rectangular_eq_menu():
+    for widget in W.winfo_children():
+        widget.destroy()
+    
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    
+    rectangular_lbl = Label(top_frame, text='Las dimensiones para los ductos rectangulars equivalentes de cada ramal del sistema se presenta a continuación', font=('Arial', 25), bg='gray12', fg='gray80')
+    rectangular_lbl.pack(side='top', pady=1)
+    
+    middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
+    middle_frame.pack(expand=True)
+    
+    selected =  app_state.selected_option.get()
+    rows_number = app_state.duct_number.get()
+    rows, cols = rows_number, 3
+    
+    for i in range(rows):
+        branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
+                        borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+        branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
+    
+    #if statement to show the correct units for the rectangular equivalent menu
+    if selected == 1:
+        rect_eq_1_lbl = Label(middle_frame, text='opcion 1 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_1_lbl.grid(row=0, column=1)
+        
+        rect_eq_2_lbl = Label(middle_frame, text='opcion 2 (m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_2_lbl.grid(row=0, column=2)
+        
+        rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_3_lbl.grid(row=0, column=3)
+    
+    elif selected == 2:
+        rect_eq_1_lbl = Label(middle_frame, text='opcion 1 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_1_lbl.grid(row=0, column=1)
+        
+        rect_eq_2_lbl = Label(middle_frame, text='opcion 2 (m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_2_lbl.grid(row=0, column=2)
+        
+        rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_3_lbl.grid(row=0, column=3)
+    
+    elif selected == 3:
+        rect_eq_1_lbl = Label(middle_frame, text='opcion 1 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_1_lbl.grid(row=0, column=1)
+        
+        rect_eq_2_lbl = Label(middle_frame, text='opcion 2 (in)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_2_lbl.grid(row=0, column=2)
+        
+        rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_3_lbl.grid(row=0, column=3)
+        
+    
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+    
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=corrections_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
+
+###################################################################################################################################
+#function to switch to rugosity menu
+def rugosity_menu():
+    for widget in W.winfo_children():
+        widget.destroy()
+
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    
+    middle_frame = Frame(W, bg='gray12')
+    middle_frame.pack(expand=True)
+    
+    rugosity_lbl = Label(top_frame, text='Hasta ahora se ha trabajado con una rugosidad #### \n Seleccione el material del ducto', font=('Arial', 15), bg='gray12', fg='gray80')
+    rugosity_lbl.pack(side='top', pady=1)
+    
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
+    
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=corrections_menu)
+    back_btn.pack (side='left', padx=10, pady=10)
+    
+
+###################################################################################################################################
 
 #function to switch corrections menu
 def corrections_menu():
@@ -39,10 +123,10 @@ def corrections_menu():
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
-    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'), command=rugosity_menu)
     ruogosity_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
-    rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'),command=rectangular_eq_menu)
     rectangular_eq_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
     pre_desing_btn = Button(middle_frame, text='Volver a hacer el diimensionamiento preliminar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
@@ -77,14 +161,11 @@ def result1_menu():
     middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
     middle_frame.pack(expand=True)
     
-    #this if statement is meant to display the results of the selected option of units and the duct number
+    #Get values from the entry fields
     
     selected =  app_state.selected_option.get()
     rows_number = app_state.duct_number.get()
-
-    #use this variables to show the values of temperature and
-    #temperatura_test = print(f"{app_state.get_temp}")
-    #altitud_test = print(f"{app_state.get_alt}")
+    T = float(app_state.get_temp)
     
     print(f"Selected option: {selected}")
     print(f"Duct number: {rows_number}")
@@ -106,9 +187,8 @@ def result1_menu():
     H = float(app_state.get_alt)
     # Calculate pressure
     pressure = calculate_pressure(H)
-
-    # Print result
-    print(f"Atmospheric pressure at {H:.2f} m is {pressure:.2f} Pa")
+    
+    
     
     #variables to get the values of the flowrate and length
     flowrate_range = app_state.flowrate_entries
@@ -120,7 +200,7 @@ def result1_menu():
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
     
-    #these for statemnts shows the value of the flowrate, length and pressure; the correct units to display are set in the below if statement.
+    #these for statemnts shows the value of the flowrate, length, temperature and pressure; the correct units to display are set in the below if statement.
     for i in range(len(flowrate_range)):
             flow_value = flowrate_range[i]  # Get the entered text from Entry
             branch_flow_values = Label(middle_frame, text=f"{flow_value}", width=7, height=1, 
@@ -132,6 +212,11 @@ def result1_menu():
             branch_length_values = Label(middle_frame, text=f"{length_value}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_length_values.grid(row=i+1, column=2, padx=2, pady=2, sticky="nsew")
+            
+    for i in range(rows):
+            branch_temperature_values = Label(middle_frame, text=f"{T}", width=7, height=1, 
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            branch_temperature_values.grid(row=i+1, column=3, padx=2, pady=2, sticky="nsew")
     
     for i in range(rows):
             branch_pressure_values = Label(middle_frame, text=f"{pressure:.2f}", width=7, height=1, 
