@@ -31,7 +31,7 @@ def rectangular_eq_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    rectangular_lbl = Label(top_frame, text='Las dimensiones para los ductos rectangulars equivalentes de cada ramal del sistema se presenta a continuación', font=('Arial', 25), bg='gray12', fg='gray80')
+    rectangular_lbl = Label(top_frame, text='Las dimensiones para los ductos rectangulares equivalentes \n de cada ramal del sistema se presenta a continuación', font=('Arial', 25), bg='gray12', fg='gray80')
     rectangular_lbl.pack(side='top', pady=1)
     
     middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
@@ -77,7 +77,6 @@ def rectangular_eq_menu():
         rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_3_lbl.grid(row=0, column=3)
         
-    
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
     
@@ -96,7 +95,7 @@ def rugosity_menu():
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
-    rugosity_lbl = Label(top_frame, text='Hasta ahora se ha trabajado con una rugosidad #### \n Seleccione el material del ducto', font=('Arial', 15), bg='gray12', fg='gray80')
+    rugosity_lbl = Label(top_frame, text='Hasta ahora se ha trabajado con una rugosidad #### \n Seleccione el material del ducto', font=('Arial', 25), bg='gray12', fg='gray80')
     rugosity_lbl.pack(side='top', pady=1)
     
     bottom_frame = Frame(W, bg='gray12')
