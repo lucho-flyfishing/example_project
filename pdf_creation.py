@@ -1,10 +1,10 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
+#este codi
 # Sample variables
-name = "John Doe"
+name = "Joe Mama"
 age = 30
-city = "New York"
+city = "Cincinnati" 
 
 # Create PDF
 pdf_filename = "output.pdf"

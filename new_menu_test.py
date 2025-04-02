@@ -4,7 +4,8 @@
 
 ###################################################################################################################################
 #setttings and libraries
-from tkinter import Tk, Label, Button, Entry, Frame, IntVar
+from tkinter import Tk, Label, Button, Entry, Frame, IntVar # importar libreria tkinter para crear la interfaz grafica
+import math  # importar libreria para operaciones matematicas
 
 class AppState:
     def __init__(self, root):
@@ -23,7 +24,7 @@ W.config(bg='gray12')
 app_state = AppState(W)
 
 ###################################################################################################################################
-#function to switch to rugosity menu
+#function to switch to roughness menu
 def rectangular_eq_menu():
     for widget in W.winfo_children():
         widget.destroy()
@@ -84,8 +85,8 @@ def rectangular_eq_menu():
     back_btn.pack (side='left', padx=10, pady=10)
 
 ###################################################################################################################################
-#function to switch to rugosity menu
-def rugosity_menu():
+#function to switch to roughness menu
+def roughness_menu():
     for widget in W.winfo_children():
         widget.destroy()
 
@@ -95,8 +96,8 @@ def rugosity_menu():
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
-    rugosity_lbl = Label(top_frame, text='Hasta ahora se ha trabajado con una rugosidad #### \n Seleccione el material del ducto', font=('Arial', 25), bg='gray12', fg='gray80')
-    rugosity_lbl.pack(side='top', pady=1)
+    roughness_lbl = Label(top_frame, text='Hasta ahora se ha trabajado con una rugosidad #### \n Seleccione el material del ducto', font=('Arial', 25), bg='gray12', fg='gray80')
+    roughness_lbl.pack(side='top', pady=1)
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
@@ -122,7 +123,7 @@ def corrections_menu():
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
-    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'), command=rugosity_menu)
+    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'), command=roughness_menu)
     ruogosity_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
     rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'),command=rectangular_eq_menu)
@@ -187,11 +188,32 @@ def result1_menu():
     # Calculate pressure
     pressure = calculate_pressure(H)
     
-    
-    
     #variables to get the values of the flowrate and length
     flowrate_range = app_state.flowrate_entries
     length_range = app_state.length_entries
+    
+    #THIS ARE THE CALCULATIONS FOR FRICTION LOSSES USING EQUAL FRICTION METHOD
+    rho = 1.2  # Density of air in kg/m³
+    mu = 1.81e-5  # Dynamic viscosity of air in kg/(m·s)
+    nu = mu / rho  # Kinematic viscosity in m²/s
+    D = 0.6  # Diameter in meters
+    L = 30  # Length in meters
+    V = 8.85  # Velocity in m/s
+    eps = 0.00009 #roughness of the duct in meters for galvanized steel 
+    Re = (rho * V * D) / mu  # Reynolds number
+    
+    
+    
+    # If statement for turbulent or laminar flow
+    if Re > 2000:
+        f = 1 / (-1.8 * math.log10(6.9 / Re + (eps / (3.7 * D)) ** 1.11)) ** 2 #turbulent flow
+    else:
+        f = 64/Re #laminar flow
+    
+    deltaP = f * (L/D) * (rho * V**2) / 2
+    print(f"Reynolds number: {Re}")
+    print(f"Friction factor: {f}")
+    print(f"Pressure loss due to friction: {deltaP} Pa")
 
     # Number of each branch
     for i in range(rows):
