@@ -4,7 +4,7 @@
 
 ###################################################################################################################################
 #setttings and libraries
-from tkinter import Tk, Label, Button, Entry, Frame, IntVar # importar libreria tkinter para crear la interfaz grafica
+from tkinter import Tk, Label, Button, Entry, Frame, IntVar, StringVar# importar libreria tkinter para crear la interfaz grafica
 import math  # importar libreria para operaciones matematicas
 
 class AppState:
@@ -15,6 +15,7 @@ class AppState:
         self.length_entries = []  # Stores lengths
         self.get_alt = IntVar(root)
         self.get_temp = IntVar(root)
+        self.filename = StringVar(root)  # Store the filename
 
 W = Tk()
 W.title('Dimensionamiento de Ductos')
@@ -193,27 +194,27 @@ def result1_menu():
     length_range = app_state.length_entries
     
     #THIS ARE THE CALCULATIONS FOR FRICTION LOSSES USING EQUAL FRICTION METHOD
-    rho = 1.2  # Density of air in kg/m³
-    mu = 1.81e-5  # Dynamic viscosity of air in kg/(m·s)
-    nu = mu / rho  # Kinematic viscosity in m²/s
-    D = 0.6  # Diameter in meters
-    L = 30  # Length in meters
-    V = 8.85  # Velocity in m/s
-    eps = 0.00009 #roughness of the duct in meters for galvanized steel 
-    Re = (rho * V * D) / mu  # Reynolds number
+    #rho = 1.2  # Density of air in kg/m³
+    #mu = 1.81e-5  # Dynamic viscosity of air in kg/(m·s)
+    #nu = mu / rho  # Kinematic viscosity in m²/s
+    #D = 0.6  # Diameter in meters
+    #L = 30  # Length in meters
+    #V = 8.85  # Velocity in m/s
+    #eps = 0.00009 #roughness of the duct in meters for galvanized steel 
+    #Re = (rho * V * D) / mu  # Reynolds number
     
     
     
     # If statement for turbulent or laminar flow
-    if Re > 2000:
-        f = 1 / (-1.8 * math.log10(6.9 / Re + (eps / (3.7 * D)) ** 1.11)) ** 2 #turbulent flow
-    else:
-        f = 64/Re #laminar flow
+    #if Re > 2000:
+        #f = 1 / (-1.8 * math.log10(6.9 / Re + (eps / (3.7 * D)) ** 1.11)) ** 2 #turbulent flow
+    #else:
+        #f = 64/Re #laminar flow
     
-    deltaP = f * (L/D) * (rho * V**2) / 2
-    print(f"Reynolds number: {Re}")
-    print(f"Friction factor: {f}")
-    print(f"Pressure loss due to friction: {deltaP} Pa")
+    #deltaP = f * (L/D) * (rho * V**2) / 2
+    #print(f"Reynolds number: {Re}")
+    #print(f"Friction factor: {f}")
+    #print(f"Pressure loss due to friction: {deltaP} Pa")
 
     # Number of each branch
     for i in range(rows):
@@ -685,15 +686,16 @@ def file_name_menu():
     # Auto-focus for caret visibility
     file_name_entry.focus()
 
-    # Function to save the file name
-    def save_file_name():
-        global file_name
-        file_name = file_name_entry.get()
-        if file_name == placeholder:
-            file_name = ''  # Avoid saving placeholder as file name
-        print(f'Nombre del archivo guardado: {file_name}')  # Just to verify it's working
-
-    save_btn = Button(W, text='Guardar archivo', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=save_file_name)
+    def save_filename():
+        filename = file_name_entry.get()
+    
+        if filename == placeholder or filename.strip() == "":
+            print("Nombre de archivo inválido.")
+        else:
+            app_state.filename.set(filename)  # Save the value
+            print(f"Guardando como: {app_state.filename.get()}")  # Print to verify
+        
+    save_btn = Button(W, text='Guardar archivo', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=save_filename)
     save_btn.pack(pady=10)
     
     bottom_frame = Frame(W, bg='gray12')
