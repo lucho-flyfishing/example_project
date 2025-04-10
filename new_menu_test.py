@@ -6,6 +6,10 @@
 #setttings and libraries
 from tkinter import Tk, Label, Button, Entry, Frame, IntVar, StringVar# importar libreria tkinter para crear la interfaz grafica
 import math  # importar libreria para operaciones matematicas
+from reportlab.lib.pagesizes import letter # importar libreria para crear el pdf
+from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle 
+from reportlab.lib import colors
 
 class AppState:
     def __init__(self, root):
@@ -130,12 +134,55 @@ def corrections_menu():
     rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'),command=rectangular_eq_menu)
     rectangular_eq_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
+    
     pre_desing_btn = Button(middle_frame, text='Volver a hacer el diimensionamiento preliminar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
     pre_desing_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
+    # Create a button to generate the PDF
     show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
     show_results_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
+    # Sample variables
+    name = "Joe Mama"
+    age = 30
+    city = "Cincinnati"
+
+    # PDF setup
+    pdf_filename = app_state.filename.get() + ".pdf"  # Use the filename from app_state
+    doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
+
+    # Text content (we'll use canvas to add this part)
+    def draw_text(canvas, doc):
+        width, height = letter
+        canvas.drawString(100, height - 200, f"Name: {name}")
+        canvas.drawString(100, height - 220, f"Age: {age}")
+        canvas.drawString(100, height - 240, f"City: {city}")
+
+    # Table data (like an Excel sheet)
+    data = [
+        ['Ramal','Caudal', 'Longitud', 'Temperatura', 'Presion','Diametro', 'Velocidad', 'Perdidas'],
+        ['','Apples', '10', '$5', '1.5', '2.0', '0.5'],
+        ['','Bananas', '6', '$3', '1.0', '1.5', '0.2'],
+        ['','Oranges', '12', '$6', '2.0', '2.5', '0.8'],
+    ]
+
+    # Create table and style
+    table = Table(data)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    # Build PDF with table and text
+    doc.build([table], onFirstPage=draw_text)
+
+    print(f"PDF '{pdf_filename}' created successfully!")
+    
+    # Create a button to calculate accessories
     accesories_btn = Button(middle_frame, text='Calcular Accesorios', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
     accesories_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
@@ -682,7 +729,7 @@ def file_name_menu():
     # Bind focus events
     file_name_entry.bind('<FocusIn>', on_focus_in)
     file_name_entry.bind('<FocusOut>', on_focus_out)
-
+    
     # Auto-focus for caret visibility
     file_name_entry.focus()
 
