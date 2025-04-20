@@ -138,49 +138,71 @@ def corrections_menu():
     pre_desing_btn = Button(middle_frame, text='Volver a hacer el diimensionamiento preliminar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
     pre_desing_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
-    # Create a button to generate the PDF
-    show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    # Function to generate the PDF
+    def generate_pdf():
+        # Call the function to create the PDF
+        # PDF setup
+        pdf_filename = app_state.filename.get() + ".pdf"  # Use the filename from app_state
+        doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
+        
+        # Header and footer text
+        name = "[A continuacion se mostraran los resultados para el calculo de los ductos]"
+        age = 30
+        head = "Cincinnati"
+        
+        # Text drawing function
+        def draw_text(canvas, doc):
+            width, height = letter
+            canvas.drawString(100, height - 150, f"City: {head}")
+            canvas.drawString(100, height - 200, f"Name: {name}")
+            canvas.drawString(100, height - 220, f"Age: {age}")
+        
+        
+        # Get the number of rows and the values of each app from app_state
+        rows= app_state.duct_number.get()
+        length_values = app_state.length_entries
+        flowrate_values = app_state.flowrate_entries
+        selected = app_state.selected_option.get()
+        
+        if selected == 1:
+            # Table data (like an Excel sheet) using right dimensions
+            data = [['Ramal', 'Caudal (L/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presion(Pa)', 'Diametro(mm)', 'Velocidad(m/s)', 'Perdidas(Pa/m)']]
+        elif selected == 2:
+            data = [['Ramal', 'Caudal (m³/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presion(Pa)', 'Diametro(mm)', 'Velocidad(m/s)', 'Perdidas(Pa/m)']]
+        elif selected == 3:
+            data = [['Ramal', 'Caudal (cfm)', 'Longitud(ft)', 'Temperatura(F°)', 'Presion(Pa)', 'Diametro(in)', 'Velocidad(fpm)', 'Perdidas(inH20/ft)']]
+        
+        # Build table rows
+        for i in range(rows):
+            row_number = str(i + 1)
+
+            # Get values or fallback to empty strings
+            flowrate = flowrate_values[i] if i < len(flowrate_values) else ''
+            length = length_values[i] if i < len(length_values) else ''
+
+            # Fill in only 'Caudal' (index 1) and 'Longitud' (index 2), rest are empty
+            row = [row_number, flowrate, length, '', '', '', '', '']
+            data.append(row)
+
+        # Create table and style
+        table = Table(data)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+
+        # Build PDF with table and text
+        doc.build([table], onFirstPage=draw_text)
+
+        print(f"PDF '{pdf_filename}' created successfully!")
+
+    # Button to generate the PDF
+    show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'), command=generate_pdf)
     show_results_btn.pack(padx=5, pady=5, anchor="w", fill="x")
-    
-    # Sample variables
-    name = "Joe Mama"
-    age = 30
-    city = "Cincinnati"
-
-    # PDF setup
-    pdf_filename = app_state.filename.get() + ".pdf"  # Use the filename from app_state
-    doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
-
-    # Text content (we'll use canvas to add this part)
-    def draw_text(canvas, doc):
-        width, height = letter
-        canvas.drawString(100, height - 200, f"Name: {name}")
-        canvas.drawString(100, height - 220, f"Age: {age}")
-        canvas.drawString(100, height - 240, f"City: {city}")
-
-    # Table data (like an Excel sheet)
-    data = [
-        ['Ramal','Caudal', 'Longitud', 'Temperatura', 'Presion','Diametro', 'Velocidad', 'Perdidas'],
-        ['','Apples', '10', '$5', '1.5', '2.0', '0.5'],
-        ['','Bananas', '6', '$3', '1.0', '1.5', '0.2'],
-        ['','Oranges', '12', '$6', '2.0', '2.5', '0.8'],
-    ]
-
-    # Create table and style
-    table = Table(data)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.gray),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    # Build PDF with table and text
-    doc.build([table], onFirstPage=draw_text)
-
-    print(f"PDF '{pdf_filename}' created successfully!")
     
     # Create a button to calculate accessories
     accesories_btn = Button(middle_frame, text='Calcular Accesorios', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
@@ -237,8 +259,8 @@ def result1_menu():
     pressure = calculate_pressure(H)
     
     #variables to get the values of the flowrate and length
-    flowrate_range = app_state.flowrate_entries
-    length_range = app_state.length_entries
+    flowrate_values = app_state.flowrate_entries
+    length_values = app_state.length_entries
     
     #THIS ARE THE CALCULATIONS FOR FRICTION LOSSES USING EQUAL FRICTION METHOD
     #rho = 1.2  # Density of air in kg/m³
@@ -270,14 +292,14 @@ def result1_menu():
             branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
     
     #these for statemnts shows the value of the flowrate, length, temperature and pressure; the correct units to display are set in the below if statement.
-    for i in range(len(flowrate_range)):
-            flow_value = flowrate_range[i]  # Get the entered text from Entry
+    for i in range(len(flowrate_values)):
+            flow_value = flowrate_values[i]  # Get the entered text from Entry
             branch_flow_values = Label(middle_frame, text=f"{flow_value}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_flow_values.grid(row=i+1, column=1, padx=2, pady=2, sticky="nsew")
     
-    for i in range(len(length_range)):
-            length_value = length_range[i]  # Get the entered text from Entry
+    for i in range(len(length_values)):
+            length_value = length_values[i]  # Get the entered text from Entry
             branch_length_values = Label(middle_frame, text=f"{length_value}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_length_values.grid(row=i+1, column=2, padx=2, pady=2, sticky="nsew")
