@@ -146,20 +146,19 @@ def corrections_menu():
         doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
         
         # Header and footer text
-        name = "[A continuacion se mostraran los resultados para el calculo de los ductos]"
-        age = 30
-        head = "Cincinnati"
+        header = "A continuacion se muestran los resultados obtenidos del dimensionamiento de los ductos"
+        footer = "[footer]"
+
         
         # Text drawing function
         def draw_text(canvas, doc):
             width, height = letter
-            canvas.drawString(100, height - 150, f"City: {head}")
-            canvas.drawString(100, height - 200, f"Name: {name}")
-            canvas.drawString(100, height - 220, f"Age: {age}")
+            canvas.drawString(80, height - 50, f"{header}") 
+            canvas.drawString(100, height - 700, f"{footer}")
         
         
         # Get the number of rows and the values of each app from app_state
-        rows= app_state.duct_number.get()
+        rows = app_state.duct_number.get()
         length_values = app_state.length_entries
         flowrate_values = app_state.flowrate_entries
         selected = app_state.selected_option.get()
