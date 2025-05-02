@@ -54,33 +54,33 @@ def rectangular_eq_menu():
     
     #if statement to show the correct units for the rectangular equivalent menu
     if selected == 1:
-        rect_eq_1_lbl = Label(middle_frame, text='opcion 1 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_1_lbl = Label(middle_frame, text='opción 1 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_1_lbl.grid(row=0, column=1)
         
-        rect_eq_2_lbl = Label(middle_frame, text='opcion 2 (m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_2_lbl = Label(middle_frame, text='opción 2 (m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_2_lbl.grid(row=0, column=2)
         
-        rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_3_lbl = Label(middle_frame, text='opción 3 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_3_lbl.grid(row=0, column=3)
     
     elif selected == 2:
-        rect_eq_1_lbl = Label(middle_frame, text='opcion 1 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_1_lbl = Label(middle_frame, text='opción 1 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_1_lbl.grid(row=0, column=1)
         
-        rect_eq_2_lbl = Label(middle_frame, text='opcion 2 (m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_2_lbl = Label(middle_frame, text='opción 2 (m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_2_lbl.grid(row=0, column=2)
         
-        rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_3_lbl = Label(middle_frame, text='opción 3 (m)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_3_lbl.grid(row=0, column=3)
     
     elif selected == 3:
-        rect_eq_1_lbl = Label(middle_frame, text='opcion 1 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_1_lbl = Label(middle_frame, text='opción 1 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_1_lbl.grid(row=0, column=1)
         
-        rect_eq_2_lbl = Label(middle_frame, text='opcion 2 (in)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_2_lbl = Label(middle_frame, text='opción 2 (in)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_2_lbl.grid(row=0, column=2)
         
-        rect_eq_3_lbl = Label(middle_frame, text='opcion 3 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        rect_eq_3_lbl = Label(middle_frame, text='opción 3 (in)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         rect_eq_3_lbl.grid(row=0, column=3)
         
     bottom_frame = Frame(W, bg='gray12')
@@ -122,7 +122,7 @@ def corrections_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    corrections_lbl = Label(top_frame, text='Menu de correcciones', font=('Arial', 25), bg='gray12', fg='gray80')
+    corrections_lbl = Label(top_frame, text='Menú de correcciones', font=('Arial', 25), bg='gray12', fg='gray80')
     corrections_lbl.pack(side='top', pady=1)
     
     middle_frame = Frame(W, bg='gray12')
@@ -165,11 +165,11 @@ def corrections_menu():
         
         if selected == 1:
             # Table data (like an Excel sheet) using right dimensions
-            data = [['Ramal', 'Caudal (L/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presion(Pa)', 'Diametro(mm)', 'Velocidad(m/s)', 'Perdidas(Pa/m)']]
+            data = [['Ramal', 'Caudal (L/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presión(Pa)', 'Diámetro(mm)', 'Velocidad(m/s)', 'Pérdidas(Pa/m)']]
         elif selected == 2:
-            data = [['Ramal', 'Caudal (m³/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presion(Pa)', 'Diametro(mm)', 'Velocidad(m/s)', 'Perdidas(Pa/m)']]
+            data = [['Ramal', 'Caudal (m³/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presión(Pa)', 'Diámetro(mm)', 'Velocidad(m/s)', 'Pérdidas(Pa/m)']]
         elif selected == 3:
-            data = [['Ramal', 'Caudal (cfm)', 'Longitud(ft)', 'Temperatura(F°)', 'Presion(Pa)', 'Diametro(in)', 'Velocidad(fpm)', 'Perdidas(inH20/ft)']]
+            data = [['Ramal', 'Caudal (cfm)', 'Longitud(ft)', 'Temperatura(F°)', 'Presión(Pa)', 'Diámetro(in)', 'Velocidad(fpm)', 'Pérdidas(inH20/ft)']]
         
         # Build table rows
         for i in range(rows):
@@ -323,16 +323,16 @@ def result1_menu():
         temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         temperatue_main.grid(row=0, column=3)
         
-        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main = Label(middle_frame, text='Presión (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         preasure_main.grid(row=0, column=4)
         
         velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         velocity_main.grid(row=0, column=5)       
         
-        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        friction_loses_main = Label(middle_frame, text='Pérdidas por fricción (Pa/m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         friction_loses_main.grid(row=0, column=6)
         
-        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        diameter_main = Label(middle_frame, text='Diámetro (mm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         diameter_main.grid(row=0, column=7)       
         
     elif selected == 2:
@@ -345,16 +345,16 @@ def result1_menu():
         temperatue_main = Label(middle_frame, text='Temperatura (C°)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         temperatue_main.grid(row=0, column=3)
         
-        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main = Label(middle_frame, text='Presión (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         preasure_main.grid(row=0, column=4)
         
         velocity_main = Label(middle_frame, text='Velocidad (m/s)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         velocity_main.grid(row=0, column=5)       
         
-        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (Pa/m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        friction_loses_main = Label(middle_frame, text='Pérdidas por fricción (Pa/m)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         friction_loses_main.grid(row=0, column=6)
         
-        diameter_main = Label(middle_frame, text='Diametro (mm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        diameter_main = Label(middle_frame, text='Diámetro (mm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         diameter_main.grid(row=0, column=7) 
         
     elif selected == 3:
@@ -367,16 +367,16 @@ def result1_menu():
         temperatue_main = Label(middle_frame, text='Temperatura (F°)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         temperatue_main.grid(row=0, column=3)
         
-        preasure_main = Label(middle_frame, text='Presion (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main = Label(middle_frame, text='Presión (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         preasure_main.grid(row=0, column=4)
         
         velocity_main = Label(middle_frame, text='Velocidad (fpm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         velocity_main.grid(row=0, column=5)       
         
-        friction_loses_main = Label(middle_frame, text='Perdidas por friccion (inH20/ft)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        friction_loses_main = Label(middle_frame, text='Pérdidas por fricción (inH20/ft)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         friction_loses_main.grid(row=0, column=6)
         
-        diameter_main = Label(middle_frame, text='Diametro (in)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        diameter_main = Label(middle_frame, text='Diámetro (in)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         diameter_main.grid(row=0, column=7) 
     
     bottom_frame = Frame(W, bg='gray12')
@@ -399,7 +399,7 @@ def velocity_range_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    ASHRAE_vel_rec_lbl = Label(top_frame, text='Recomendacion ASHRAE', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    ASHRAE_vel_rec_lbl = Label(top_frame, text='Recomendación ASHRAE', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
     ASHRAE_vel_rec_lbl.pack(side='top', pady=1)
     
     bottom_frame = Frame(W, bg='gray12')
@@ -601,7 +601,7 @@ def units_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    menu3_lbl = Label(top_frame, text='El programa permite escoger entre tres sistemas \n de unidades, selecione las unidades para: caudal, \n perdidas, diametro y  velocidad respectivamente', font=('Arial', 24), bg='gray12', fg='gray80')
+    menu3_lbl = Label(top_frame, text='El programa permite escoger entre tres sistemas \n de unidades. Seleccione las unidades para: caudal, \n pérdidas, diámetro y velocidad, respectivamente.', font=('Arial', 24), bg='gray12', fg='gray80')
     menu3_lbl.pack(side='top', pady=1)
     
     guide_lbl = Label(top_frame, text='(haga clic en una de las opciones, luego presione siguiente)', font=('Arial', 15), bg='gray12', fg='gray80')
@@ -726,7 +726,7 @@ def file_name_menu():
     # New Menu Interface
     
     # Entry for file name
-    file_name_lbl = Label(W, text='El programa va a crear un archivo con los \n resultados, introduzca el nombre con el que \n quiere guardar el archivo, luego presione siguiente:', font=('Arial', 24), bg='gray12', fg='gray80')
+    file_name_lbl = Label(W, text='El programa va a crear un archivo con los \n resultados. Introduzca el nombre con el que \n desea guardar el archivo, luego presione “Siguiente”:', font=('Arial', 24), bg='gray12', fg='gray80')
     file_name_lbl.pack(pady=1)  
 
     file_name_entry = Entry(W, font=('Arial', 12), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
@@ -788,10 +788,10 @@ def main_menu():
     lbl1 = Label(W, text='DIMENSIONAMIENTO DE DUCTOS \n DE AIRE ACONDICIONADO', font=('Arial', 25, 'bold'), bg='gray12', fg='brown2')
     lbl1.pack(pady=1)
     
-    lbl2 = Label(W, text='Con este programa usted podra dimensionar ductos de ventilacion \n considerando las perdidas debidas a la friccion en tramos rectos y \n en accesorios. Solo es necesario conocer el caudal en los \n rameles del sistema, ademas, el programa presenta los ductos \n rectangulares equivalentes', font=('Arial', 20), bg='gray12', fg='gray80')
+    lbl2 = Label(W, text='Con este programa usted podrá dimensionar ductos de ventilación \n considerando las pérdidas debidas a la fricción en tramos rectos y \n en accesorios. Solo es necesario conocer el caudal en los \n ramales del sistema. Además, el programa presenta los ductos \n rectangulares equivalentes.', font=('Arial', 20), bg='gray12', fg='gray80')
     lbl2.pack(pady=1)
 
-    lbl3 = Label(W, text='(En los calculos se incluyen las correciones debidas a la altitud, \n temperatura y rugosidad)', font=('Arial', 10), bg='gray12', fg='gray80')
+    lbl3 = Label(W, text='(En los cálculos se incluyen las correcciones debidas a la altitud, \n la temperatura y la rugosidad.)', font=('Arial', 10), bg='gray12', fg='gray80')
     lbl3.pack(pady=1)
     
     start_button = Button(W, text='Iniciar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
