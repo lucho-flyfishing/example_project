@@ -763,7 +763,7 @@ def file_name_menu():
             app_state.filename.set(filename)  # Save the value
             print(f"Guardando como: {app_state.filename.get()}")  # Print to verify
         
-    save_btn = Button(W, text='Guardar archivo', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=save_filename)
+    save_btn = Button(W, text='Guardar nombre del archivo', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=save_filename)
     save_btn.pack(pady=10)
     
     bottom_frame = Frame(W, bg='gray12')
