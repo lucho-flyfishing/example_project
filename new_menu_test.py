@@ -23,7 +23,7 @@ class AppState:
 
 W = Tk()
 W.title('Dimensionamiento de Ductos')
-W.geometry('600x600')
+W.geometry('1200x800')
 W.config(bg='gray12')
 
 app_state = AppState(W)
@@ -122,20 +122,19 @@ def corrections_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    corrections_lbl = Label(top_frame, text='Menú de correcciones', font=('Arial', 25), bg='gray12', fg='gray80')
+    corrections_lbl = Label(top_frame, text='Menú de correcciones', font=('Arial', 30), bg='gray12', fg='gray80')
     corrections_lbl.pack(side='top', pady=1)
     
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
-    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'), command=roughness_menu)
+    ruogosity_btn = Button(middle_frame, text='Correcion por rugosidad del material del ducto', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'), command=roughness_menu)
     ruogosity_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
-    rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'),command=rectangular_eq_menu)
+    rectangular_eq_btn = Button(middle_frame, text='Ductos rectangulares equivalentes', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'),command=rectangular_eq_menu)
     rectangular_eq_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
-    
-    pre_desing_btn = Button(middle_frame, text='Volver a hacer el diimensionamiento preliminar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    pre_desing_btn = Button(middle_frame, text='Volver a hacer el dimensionamiento preliminar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'))
     pre_desing_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
     # Function to generate the PDF
@@ -200,11 +199,11 @@ def corrections_menu():
         print(f"PDF '{pdf_filename}' created successfully!")
 
     # Button to generate the PDF
-    show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'), command=generate_pdf)
+    show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'), command=generate_pdf)
     show_results_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
     # Create a button to calculate accessories
-    accesories_btn = Button(middle_frame, text='Calcular Accesorios', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 15, 'bold'))
+    accesories_btn = Button(middle_frame, text='Calcular Accesorios', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'))
     accesories_btn.pack(padx=5, pady=5, anchor="w", fill="x")
     
     bottom_frame = Frame(W, bg='gray12')
@@ -224,7 +223,7 @@ def result1_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    pre_result_main = Label(top_frame, text='Dimensionamiento preliminar', font=('Arial', 25), bg='gray12', fg='gray80')
+    pre_result_main = Label(top_frame, text='Dimensionamiento preliminar', font=('Arial', 30), bg='gray12', fg='gray80')
     pre_result_main.pack(side='top', pady=1)
 
     middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
@@ -439,7 +438,7 @@ def branches_features():
     for widget in W.winfo_children():
         widget.destroy()
 
-    Label(W, text="Ingrese los valores de caudal y longitud de ramal", font=('Arial', 16, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
+    Label(W, text="Ingrese los valores de caudal y longitud de ramal", font=('Arial', 30, 'bold'), bg='grey12', fg='grey80').pack(pady=10)
 
     selected = app_state.selected_option.get()
     duct_number = app_state.duct_number.get()
@@ -459,22 +458,22 @@ def branches_features():
     }
     
     if selected in headers:
-        Label(middle_frame, text=headers[selected][0], font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
-        Label(middle_frame, text=headers[selected][1], font=('Arial', 12), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
+        Label(middle_frame, text=headers[selected][0], font=('Arial', 16,'bold'), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
+        Label(middle_frame, text=headers[selected][1], font=('Arial', 16,'bold'), bg='grey12', fg='grey80').grid(row=0, column=2, padx=5, pady=5)
 
     # Create input fields for each branch
     flowrate_entries = []
     length_entries = []
 
     for i in range(duct_number):
-        Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 12), bg='grey12', fg='white').grid(row=i+1, column=0, padx=5, pady=5)
+        Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 14), bg='grey12', fg='white').grid(row=i+1, column=0, padx=3, pady=1)
 
         flowrate_entry = Entry(middle_frame, font=('Arial', 12), bg='grey40', width=10)
-        flowrate_entry.grid(row=i+1, column=1, padx=5, pady=5)
+        flowrate_entry.grid(row=i+1, column=1, padx=5, pady=1)
         flowrate_entries.append(flowrate_entry)
 
         length_entry = Entry(middle_frame, font=('Arial', 12), bg='grey40' , width=10)
-        length_entry.grid(row=i+1, column=2, padx=5, pady=5)
+        length_entry.grid(row=i+1, column=2, padx=5, pady=1)
         length_entries.append(length_entry)
     
         # Placeholder text
@@ -519,7 +518,7 @@ def altitude_temperature_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    alt_temp_lbl = Label(top_frame, text=' Ingrese la altitud y temperatura del \n lugar de la instalación', font=('Arial', 24), bg='gray12', fg='gray80')
+    alt_temp_lbl = Label(top_frame, text=' Ingrese la altitud y temperatura del \n lugar de la instalación', font=('Arial', 30), bg='gray12', fg='gray80')
     alt_temp_lbl.pack(side='top', pady=1)
     
     #middel frame to hold entry fields
@@ -601,10 +600,10 @@ def units_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    menu3_lbl = Label(top_frame, text='El programa permite escoger entre tres sistemas \n de unidades. Seleccione las unidades para: caudal, \n pérdidas, diámetro y velocidad, respectivamente.', font=('Arial', 24), bg='gray12', fg='gray80')
+    menu3_lbl = Label(top_frame, text='El programa permite escoger entre tres sistemas \n de unidades. Seleccione las unidades para: caudal, \n pérdidas, diámetro y velocidad, respectivamente.', font=('Arial', 30), bg='gray12', fg='gray80')
     menu3_lbl.pack(side='top', pady=1)
     
-    guide_lbl = Label(top_frame, text='(haga clic en una de las opciones, luego presione siguiente)', font=('Arial', 15), bg='gray12', fg='gray80')
+    guide_lbl = Label(top_frame, text='(haga clic en una de las opciones, luego presione siguiente)', font=('Arial', 18), bg='gray12', fg='gray80')
     guide_lbl.pack(side='top', pady=1)
     
     #selecion de unidades
@@ -664,7 +663,7 @@ def duct_number_menu():
         widget.destroy()
     
     # Entry for duct number
-    duct_number_lbl = Label(W, text='Introduzca la cantidad de ramales del ducto, luego \n presione siguiente:', font=('Arial', 24), bg='gray12', fg='gray80')
+    duct_number_lbl = Label(W, text='Introduzca la cantidad de ramales del ducto, luego \n presione siguiente:', font=('Arial', 30), bg='gray12', fg='gray80')
     duct_number_lbl.pack(pady=1)
 
     duct_number_entry = Entry(W, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
@@ -726,8 +725,8 @@ def file_name_menu():
     # New Menu Interface
     
     # Entry for file name
-    file_name_lbl = Label(W, text='El programa va a crear un archivo con los \n resultados. Introduzca el nombre con el que \n desea guardar el archivo, luego presione “Siguiente”:', font=('Arial', 24), bg='gray12', fg='gray80')
-    file_name_lbl.pack(pady=1)  
+    file_name_lbl = Label(W, text='El programa va a crear un archivo con los \n resultados. Introduzca el nombre con el que \n desea guardar el archivo y presione "Guardar\n nombre del archivo", luego presione “Siguiente”:', font=('Arial', 26), bg='gray12', fg='gray80')
+    file_name_lbl.pack(pady=1)
 
     file_name_entry = Entry(W, font=('Arial', 12), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
     file_name_entry.pack(pady=5, ipady=5, ipadx=10)
@@ -785,19 +784,19 @@ def main_menu():
         widget.destroy()
 
     # Original Main Menu
-    lbl1 = Label(W, text='DIMENSIONAMIENTO DE DUCTOS \n DE AIRE ACONDICIONADO', font=('Arial', 25, 'bold'), bg='gray12', fg='brown2')
+    lbl1 = Label(W, text='DIMENSIONAMIENTO DE DUCTOS \n DE AIRE ACONDICIONADO', font=('Arial', 30, 'bold'), bg='gray12', fg='brown2')
     lbl1.pack(pady=1)
     
-    lbl2 = Label(W, text='Con este programa usted podrá dimensionar ductos de ventilación \n considerando las pérdidas debidas a la fricción en tramos rectos y \n en accesorios. Solo es necesario conocer el caudal en los \n ramales del sistema. Además, el programa presenta los ductos \n rectangulares equivalentes.', font=('Arial', 20), bg='gray12', fg='gray80')
+    lbl2 = Label(W, text='Con este programa usted podrá dimensionar ductos de ventilación \n considerando las pérdidas debidas a la fricción en tramos rectos y \n en accesorios. Solo es necesario conocer el caudal en los \n ramales del sistema. Además, el programa presenta los ductos \n rectangulares equivalentes.', font=('Arial', 26), bg='gray12', fg='gray80')
     lbl2.pack(pady=1)
 
-    lbl3 = Label(W, text='(En los cálculos se incluyen las correcciones debidas a la altitud, \n la temperatura y la rugosidad.)', font=('Arial', 10), bg='gray12', fg='gray80')
+    lbl3 = Label(W, text='(En los cálculos se incluyen las correcciones debidas a la altitud, \n la temperatura y la rugosidad.)', font=('Arial', 16), bg='gray12', fg='gray80')
     lbl3.pack(pady=1)
     
-    start_button = Button(W, text='Iniciar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
+    start_button = Button(W, text='Iniciar', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 24, 'bold'), command=file_name_menu)
     start_button.pack(pady=30)
 
-    lbl5 = Label(W, text='Desarrollado en la Universidad del Valle por Luis Jimenez', font=('Arial', 8, 'bold'), bg='gray12', fg='gray80')
+    lbl5 = Label(W, text='Desarrollado en la Universidad del Valle por Luis Jimenez', font=('Arial', 12, 'bold'), bg='gray12', fg='gray80')
     lbl5.pack(side='bottom', pady=1)
 
 main_menu()
