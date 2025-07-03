@@ -259,29 +259,16 @@ def result1_menu():
     #variables to get the values of the flowrate and length
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
-    
-    #THIS ARE THE CALCULATIONS FOR FRICTION LOSSES USING EQUAL FRICTION METHOD
-    #rho = 1.2  # Density of air in kg/m³
-    #mu = 1.81e-5  # Dynamic viscosity of air in kg/(m·s)
-    #nu = mu / rho  # Kinematic viscosity in m²/s
-    #D = 0.6  # Diameter in meters
-    #L = 30  # Length in meters
-    #V = 8.85  # Velocity in m/s
-    #eps = 0.00009 #roughness of the duct in meters for galvanized steel 
-    #Re = (rho * V * D) / mu  # Reynolds number
-    
-    
-    
-    # If statement for turbulent or laminar flow
-    #if Re > 2000:
-        #f = 1 / (-1.8 * math.log10(6.9 / Re + (eps / (3.7 * D)) ** 1.11)) ** 2 #turbulent flow
-    #else:
-        #f = 64/Re #laminar flow
-    
-    #deltaP = f * (L/D) * (rho * V**2) / 2
-    #print(f"Reynolds number: {Re}")
-    #print(f"Friction factor: {f}")
-    #print(f"Pressure loss due to friction: {deltaP} Pa")
+
+    # Calculate diameter knowing the flowrate and velocity
+    diameter_values = []
+    for i in range(len(flowrate_values)):
+        flow_value = flowrate_values[i]
+        velocity = 8.85  # Assuming a constant velocity for calculation
+        diameter = math.sqrt((4 * flow_value) / (math.pi * velocity))  # Calculate diameter in meters
+        diameter = diameter * 1000  # Convert diameter to mm
+        diameter_values.append(diameter)
+        diameter_value = diameter_values[i]  # Get the calculated diameter
 
     # Number of each branch
     for i in range(rows):
@@ -289,7 +276,7 @@ def result1_menu():
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
     
-    #these for statemnts shows the value of the flowrate, length, temperature and pressure; the correct units to display are set in the below if statement.
+    #these for statemnts shows the value of the flowrate, length, temperature, pressure etc; the correct units to display are set in the below if statement.
     for i in range(len(flowrate_values)):
             flow_value = flowrate_values[i]  # Get the entered text from Entry
             branch_flow_values = Label(middle_frame, text=f"{flow_value}", width=7, height=1, 
@@ -312,6 +299,11 @@ def result1_menu():
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_pressure_values.grid(row=i+1, column=4, padx=2, pady=2, sticky="nsew")
     
+    for i in range(rows):
+            branch_diameter_values = Label(middle_frame, text=f"{diameter_value:.2f}", width=7, height=1, 
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            branch_diameter_values.grid(row=i+1, column=6, padx=2, pady=2, sticky="nsew")
+
     if selected == 1:
         flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         flowrate_main.grid(row=0, column=1)
