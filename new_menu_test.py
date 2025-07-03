@@ -15,6 +15,7 @@ class AppState:
     def __init__(self, root):
         self.selected_option = IntVar(root)  # Attach variable to Tkinter root(que los valores de las varibles se guarden para utilizarlos en otras funciones)
         self.duct_number = IntVar(root)  # Store the number of ducts
+        self.main_branch = IntVar(root)  # Store the main branch number
         self.flowrate_entries = []  # Stores flow rates
         self.length_entries = []  # Stores lengths
         self.get_alt = IntVar(root)
@@ -458,7 +459,10 @@ def branches_features():
     length_entries = []
 
     for i in range(duct_number):
-        Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 14), bg='grey12', fg='white').grid(row=i+1, column=0, padx=3, pady=1)
+        if app_state.main_branch.get() == i + 1:
+            Label(middle_frame, text=f'Ramal {i+1} (Principal):', font=('Arial', 14), bg='grey12', fg='red3').grid(row=i+1, column=0, padx=3, pady=1)
+        else:
+            Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 14), bg='grey12', fg='white').grid(row=i+1, column=0, padx=3, pady=1)
 
         flowrate_entry = Entry(middle_frame, font=('Arial', 12), bg='grey40', width=10)
         flowrate_entry.grid(row=i+1, column=1, padx=5, pady=1)
@@ -654,12 +658,29 @@ def duct_number_menu():
     for widget in W.winfo_children():
         widget.destroy()
     
-    # Entry for duct number
-    duct_number_lbl = Label(W, text='Introduzca la cantidad de ramales del ducto, luego \n presione siguiente:', font=('Arial', 30), bg='gray12', fg='gray80')
+    #top frame for the menu title
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+    # Title for the duct information menu
+    duct_info_tittle = Label(top_frame, text='Complete la información sobre los ramales \n del sistema, luego presione " Siguiente".', font=('Arial', 30, 'bold'), bg='gray12', fg='gray80')
+    duct_info_tittle.pack(pady=10)
+    
+    # Entry for branch number and main branch
+    # Middle frame to hold entry fields
+    middle_frame = Frame(W, bg='gray12')
+    middle_frame.pack(expand=True)
+
+    duct_number_lbl = Label(middle_frame, text='Introduzca la cantidad de ramales del ducto. ', font=('Arial', 26), bg='gray12', fg='gray80')
     duct_number_lbl.pack(pady=1)
 
-    duct_number_entry = Entry(W, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
-    duct_number_entry.pack(pady=10, ipady=5, ipadx=10)
+    duct_number_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+    duct_number_entry.pack(pady=20, ipady=5, ipadx=10)
+
+    main_branch_lbl = Label(middle_frame, text='Introduzca el número de ramal que va a usar \n como ramal principal:', font=('Arial', 26), bg='gray12', fg='gray80')
+    main_branch_lbl.pack(pady=5)
+
+    main_branch_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
+    main_branch_entry.pack(pady=20, ipady=5, ipadx=10)
 
     # Placeholder text for duct number
     duct_number_placeholder = 'Escribe aquí...'
@@ -697,13 +718,26 @@ def duct_number_menu():
 
         print(f'El número de ductos es: {app_state.duct_number.get()}')  # Verify it's working
     
+    #funcion to save the main branch number
+    def save_main_branch():
+        value = main_branch_entry.get()
+        if value == 'Escribe aquí...':
+            app_state.main_branch.set(0)
+        else:
+            try:
+                app_state.main_branch.set(int(value))
+            except ValueError:
+                print("Error: Ingrese un número válido")
+        print(f'El ramal principal es el número: {app_state.main_branch.get()}')  # Verify it's working
+    # Button to save the duct number and main branch
+        
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
 
     back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=file_name_menu)
     back_btn.pack (side='left', padx=10, pady=10)
 
-    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=lambda: [save_duct_number(), units_menu()])
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='Brown4', font=('Arial', 20, 'bold'), command=lambda: [save_duct_number(), save_main_branch(), units_menu()])
     next_btn.pack(side='right' , padx= 10, pady=10)
 
 ###################################################################################################################################
