@@ -214,7 +214,7 @@ def corrections_menu():
     back_btn.pack (side='left', padx=10, pady=10)   
     
 
-###################################################################################################################################
+##################################################################################################################################################
 #function to switch to the results
 def result1_menu():
     #clear the current window
@@ -261,16 +261,56 @@ def result1_menu():
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
 
-    # Calculate diameter knowing the flowrate and velocity
+    # Calculate diameter knowing the flowrate and velocity and friction losses for each branch
     diameter_values = []
+    friction_loss_per_length_values = []
+
+    density = 1.2  # kg/m³ at sea level (standard air)
+    f = 0.3  # typical roughness friction factor for ducts
+
     for i in range(len(flowrate_values)):
         flow_value = flowrate_values[i]
-        velocity = 8.85  # Assuming a constant velocity for calculation
-        diameter = math.sqrt((4 * flow_value) / (math.pi * velocity))  # Calculate diameter in meters
-        diameter = diameter * 1000  # Convert diameter to mm
-        diameter_values.append(diameter)
-        diameter_value = diameter_values[i]  # Get the calculated diameter
+        length = length_values[i]  # still available if you need it
 
+        if selected == 1:
+            velocity = 2.48  # m/s
+            Q = flow_value / 1000  # L/s → m³/s
+            diameter_m = math.sqrt((4 * Q) / (math.pi * velocity))
+            diameter = diameter_m * 1000  # m → mm
+
+            S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
+
+        elif selected == 2:
+            velocity = 2.48  # m/s
+            Q = flow_value  # m³/s
+            diameter_m = math.sqrt((4 * Q) / (math.pi * velocity))
+            diameter = diameter_m * 1000  # m → mm
+
+            S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
+
+        elif selected == 3:
+            velocity = 2.48 * 196.85  # m/s → fpm
+            Q_ft3s = flow_value / 60  # CFM → ft³/s
+            A_ft2 = Q_ft3s / velocity  # fpm
+            D_ft = math.sqrt((4 * A_ft2) / math.pi)
+            diameter_in = D_ft * 12  # ft → in
+            diameter = diameter_in
+
+            density_ip = 0.075  # lb/ft³ standard air
+            f_ip = 0.018
+
+            S_ip = f_ip * (1 / D_ft) * (density_ip * velocity ** 2) / 2  # lb/ft² per ft
+            S = S_ip / 5.202  # convert lb/ft² to in.wg per ft
+
+        else:
+            diameter = None
+            S = None
+
+        diameter_values.append(diameter)
+        friction_loss_per_length_values.append(S)
+        
+    # Create labels for the results
+    
     # Number of each branch
     for i in range(rows):
             branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
@@ -301,9 +341,22 @@ def result1_menu():
             branch_pressure_values.grid(row=i+1, column=4, padx=2, pady=2, sticky="nsew")
     
     for i in range(rows):
-            branch_diameter_values = Label(middle_frame, text=f"{diameter_value:.2f}", width=7, height=1, 
+            velocity_value = 2.48  # m/s
+            branch_velocity_values = Label(middle_frame, text=f"{velocity_value:.2f}", width=7, height=1,
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
-            branch_diameter_values.grid(row=i+1, column=6, padx=2, pady=2, sticky="nsew")
+            branch_velocity_values.grid(row=i+1, column=5, padx=2, pady=2, sticky="nsew")
+
+    for i in range(rows):
+            friction_loss_value = friction_loss_per_length_values[i]
+            branch_friction_loss_values = Label(middle_frame, text=f"{friction_loss_value:.2f}", width=7, height=1,
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            branch_friction_loss_values.grid(row=i+1, column=6, padx=2, pady=2, sticky="nsew")
+            
+    for i in range(rows):
+            diameter_value = diameter_values[i]  # Get the diameter value from the list
+            branch_diameter_values = Label(middle_frame, text=f"{diameter_value:.2f}", width=7, height=1,
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
+            branch_diameter_values.grid(row=i+1, column=7, padx=2, pady=2, sticky="nsew")
 
     if selected == 1:
         flowrate_main = Label(middle_frame, text='Caudal (L/s)', font=('Arial', 15),highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
