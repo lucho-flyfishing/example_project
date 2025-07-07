@@ -261,16 +261,16 @@ def result1_menu():
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
 
-    # Calculate diameter knowing the flowrate and velocity and friction losses for each branch
+    # Calculate diameter knowing the flowrate, velocity, and friction losses for each branch
     diameter_values = []
     friction_loss_per_length_values = []
 
     density = 1.2  # kg/m³ at sea level (standard air)
-    f = 0.3  # typical roughness friction factor for ducts
+    f = 0.022 # typical roughness friction factor for ducts
 
     for i in range(len(flowrate_values)):
         flow_value = flowrate_values[i]
-        length = length_values[i]  # still available if you need it
+        length_value= length_values[i]  # still available if you need it
 
         if selected == 1:
             velocity = 2.48  # m/s
@@ -297,7 +297,7 @@ def result1_menu():
             diameter = diameter_in
 
             density_ip = 0.075  # lb/ft³ standard air
-            f_ip = 0.018
+            f_ip = 0.0005  # typical roughness friction factor for ducts in imperial units
 
             S_ip = f_ip * (1 / D_ft) * (density_ip * velocity ** 2) / 2  # lb/ft² per ft
             S = S_ip / 5.202  # convert lb/ft² to in.wg per ft
