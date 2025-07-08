@@ -21,6 +21,8 @@ class AppState:
         self.get_alt = IntVar(root)
         self.get_temp = IntVar(root)
         self.filename = StringVar(root)  # Store the filename
+        self.diameter_values = []  # Store the diameter value
+        self.friction_loss_per_length = []  # Store the friction loss value
 
 W = Tk()
 W.title('Dimensionamiento de Ductos')
@@ -140,50 +142,61 @@ def corrections_menu():
     
     # Function to generate the PDF
     def generate_pdf():
-        # Call the function to create the PDF
         # PDF setup
-        pdf_filename = app_state.filename.get() + ".pdf"  # Use the filename from app_state
+        pdf_filename = app_state.filename.get() + ".pdf"
         doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
-        
+
         # Header and footer text
         header = "A continuacion se muestran los resultados obtenidos del dimensionamiento de los ductos"
         footer = "[footer]"
 
-        
-        # Text drawing function
         def draw_text(canvas, doc):
             width, height = letter
-            canvas.drawString(80, height - 50, f"{header}") 
-            canvas.drawString(100, height - 700, f"{footer}")
-        
-        
-        # Get the number of rows and the values of each app from app_state
+            canvas.drawString(80, height - 50, header)
+            canvas.drawString(100, height - 700, footer)
+
+        # Get data
         rows = app_state.duct_number.get()
         length_values = app_state.length_entries
         flowrate_values = app_state.flowrate_entries
         selected = app_state.selected_option.get()
-        
+        temperature = app_state.get_temp.get() if hasattr(app_state.get_temp, "get") else app_state.get_temp
+
+        try:
+            diameter_values = app_state.diameter_values
+        except AttributeError:
+            diameter_values = []
+
+        try:
+            friction_loss_per_length_values = app_state.friction_loss_per_length
+        except AttributeError:
+            friction_loss_per_length_values = []
+
+        # Define header ONCE
         if selected == 1:
-            # Table data (like an Excel sheet) using right dimensions
-            data = [['Ramal', 'Caudal (L/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presión(Pa)', 'Diámetro(mm)', 'Velocidad(m/s)', 'Pérdidas(Pa/m)']]
+            data = [['Ramal', 'Caudal (L/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presión(Pa)',
+                    'Velocidad(m/s)', 'Pérdidas(Pa/m)', 'Diámetro(mm)']]
         elif selected == 2:
-            data = [['Ramal', 'Caudal (m³/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presión(Pa)', 'Diámetro(mm)', 'Velocidad(m/s)', 'Pérdidas(Pa/m)']]
+            data = [['Ramal', 'Caudal (m³/s)', 'Longitud(m)', 'Temperatura(C°)', 'Presión(Pa)',
+                    'Velocidad(m/s)', 'Pérdidas(Pa/m)', 'Diámetro(mm)']]
         elif selected == 3:
-            data = [['Ramal', 'Caudal (cfm)', 'Longitud(ft)', 'Temperatura(F°)', 'Presión(Pa)', 'Diámetro(in)', 'Velocidad(fpm)', 'Pérdidas(inH20/ft)']]
-        
-        # Build table rows
+            data = [['Ramal', 'Caudal (cfm)', 'Longitud(ft)', 'Temperatura(F°)', 'Presión(Pa)',
+                    'Velocidad(fpm)', 'Pérdidas(inH20/ft)', 'Diámetro(in)']]
+
+        # Build rows
         for i in range(rows):
             row_number = str(i + 1)
-
-            # Get values or fallback to empty strings
             flowrate = flowrate_values[i] if i < len(flowrate_values) else ''
             length = length_values[i] if i < len(length_values) else ''
+            pressure = app_state.get_alt.get() if hasattr(app_state.get_alt, "get") else app_state.get_alt
+            velocity = 2.48
+            diameter = diameter_values[i] if i < len(diameter_values) else ''
+            friction_loss = friction_loss_per_length_values[i] if i < len(friction_loss_per_length_values) else ''
 
-            # Fill in only 'Caudal' (index 1) and 'Longitud' (index 2), rest are empty
-            row = [row_number, flowrate, length, '', '', '', '', '']
+            row = [row_number, flowrate, length, temperature, pressure, velocity, friction_loss, diameter]
             data.append(row)
 
-        # Create table and style
+        # Create and style the table
         table = Table(data)
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.gray),
@@ -194,25 +207,20 @@ def corrections_menu():
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ]))
 
-        # Build PDF with table and text
+        # Build PDF
         doc.build([table], onFirstPage=draw_text)
 
         print(f"PDF '{pdf_filename}' created successfully!")
-
-    # Button to generate the PDF
-    show_results_btn = Button(middle_frame, text='Mostrar resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'), command=generate_pdf)
-    show_results_btn.pack(padx=5, pady=5, anchor="w", fill="x")
-    
-    # Create a button to calculate accessories
-    accesories_btn = Button(middle_frame, text='Calcular Accesorios', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'))
-    accesories_btn.pack(padx=5, pady=5, anchor="w", fill="x")
+        
+    # Button to generate PDF
+    generate_pdf_btn = Button(middle_frame, text='Generar PDF con los resultados', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 25, 'bold'), command=generate_pdf)
+    generate_pdf_btn.pack(side='top', pady=10)
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
-    
-    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=result1_menu)
-    back_btn.pack (side='left', padx=10, pady=10)   
-    
+
+    back_btn = Button(bottom_frame, text='Volver al menu principal', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=main_menu)
+    back_btn.pack(side='top', pady=10)
 
 ##################################################################################################################################################
 #function to switch to the results
@@ -226,6 +234,9 @@ def result1_menu():
     
     pre_result_main = Label(top_frame, text='Dimensionamiento preliminar', font=('Arial', 30), bg='gray12', fg='gray80')
     pre_result_main.pack(side='top', pady=1)
+
+    main_branch_lbl = Label(top_frame, text='El ramal principal se muestra en color rojo en la tabla', font=('Arial', 20), bg='gray12', fg='gray80')
+    main_branch_lbl.pack(side='top', pady=1)
 
     middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
     middle_frame.pack(expand=True)
@@ -260,6 +271,7 @@ def result1_menu():
     #variables to get the values of the flowrate and length
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
+    
 
     # lists to store the results of diameter and friction loss per length
     diameter_values = []
@@ -300,7 +312,7 @@ def result1_menu():
             diameter = diameter_in
 
             density_ip = 0.075  # lb/ft³ standard air
-            f_ip = 0.0005  # typical roughness friction factor for ducts in imperial units
+            f_ip = 0.0275   # typical roughness friction factor for ducts in imperial units
 
             S_ip = f_ip * (1 / D_ft) * (density_ip * velocity ** 2) / 2  # lb/ft² per ft
             S = S_ip / 5.202  # convert lb/ft² to in.wg per ft
@@ -311,14 +323,20 @@ def result1_menu():
 
         diameter_values.append(diameter)
         friction_loss_per_length_values.append(S)
+
         
     # Create labels for the results
     
-    # Number of each branch
+    # Number of each branch and highlight the main branch
     for i in range(rows):
-            branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
+            if app_state.main_branch.get() == i + 1: 
+                branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
+                            borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='red3')
+                branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
+            else:
+                branch_values = Label(middle_frame, text=f"Ramal {i+1}", width=7, height=1, 
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
-            branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
+                branch_values.grid(row=i+1, column=0, padx=2, pady=2, sticky="nsew")
     
     #these for statemnts shows the value of the flowrate, length, temperature, pressure etc; the correct units to display are set in the below if statement.
     for i in range(len(flowrate_values)):
