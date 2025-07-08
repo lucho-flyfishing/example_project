@@ -218,9 +218,12 @@ def corrections_menu():
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
+    
+    back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=result1_menu)
+    back_btn.pack(side='left', padx=10, pady=10)
 
-    back_btn = Button(bottom_frame, text='Volver al menu principal', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=main_menu)
-    back_btn.pack(side='top', pady=10)
+    back_main_btn = Button(bottom_frame, text='Volver al menu principal', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=main_menu)
+    back_main_btn.pack(side='right', pady=10)
 
 ##################################################################################################################################################
 #function to switch to the results
