@@ -261,38 +261,41 @@ def result1_menu():
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
 
-    # Calculate diameter knowing the flowrate, velocity, and friction losses for each branch
+    # lists to store the results of diameter and friction loss per length
     diameter_values = []
     friction_loss_per_length_values = []
 
     density = 1.2  # kg/m³ at sea level (standard air)
-    f = 0.022 # typical roughness friction factor for ducts
+    f = 0.0275  # typical roughness friction factor for ducts
+
+    # Loop through each branch to calculate diameter and friction loss
 
     for i in range(len(flowrate_values)):
         flow_value = flowrate_values[i]
         length_value= length_values[i]  # still available if you need it
 
         if selected == 1:
-            velocity = 2.48  # m/s
+            velocity = 2.47  # m/s
             Q = flow_value / 1000  # L/s → m³/s
-            diameter_m = math.sqrt((4 * Q) / (math.pi * velocity))
+            diameter_m = math.sqrt((4 * Q) / (math.pi * velocity)) # m
             diameter = diameter_m * 1000  # m → mm
-
+            
+            #f = 0.25 / [ math.log10( (ε / (3.7 * D)) + (5.74 / Re^0.9) ) ]^2  # friction factor for turbulent flow
             S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
 
         elif selected == 2:
-            velocity = 2.48  # m/s
+            velocity = 2.47  # m/s
             Q = flow_value  # m³/s
-            diameter_m = math.sqrt((4 * Q) / (math.pi * velocity))
+            diameter_m = math.sqrt((4 * Q) / (math.pi * velocity)) # m
             diameter = diameter_m * 1000  # m → mm
 
             S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
 
         elif selected == 3:
-            velocity = 2.48 * 196.85  # m/s → fpm
+            velocity = 2.47 * 196.85  # m/s → fpm
             Q_ft3s = flow_value / 60  # CFM → ft³/s
             A_ft2 = Q_ft3s / velocity  # fpm
-            D_ft = math.sqrt((4 * A_ft2) / math.pi)
+            D_ft = math.sqrt((4 * A_ft2) / math.pi) # ft
             diameter_in = D_ft * 12  # ft → in
             diameter = diameter_in
 
