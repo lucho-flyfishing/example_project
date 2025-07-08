@@ -192,6 +192,8 @@ def corrections_menu():
             velocity = 2.48
             diameter = diameter_values[i] if i < len(diameter_values) else ''
             friction_loss = friction_loss_per_length_values[i] if i < len(friction_loss_per_length_values) else ''
+            diameter = f"{diameter:.2f}" if diameter != '' else ''
+            friction_loss = f"{friction_loss:.2f}" if friction_loss != '' else ''
 
             row = [row_number, flowrate, length, temperature, pressure, velocity, friction_loss, diameter]
             data.append(row)
@@ -326,6 +328,9 @@ def result1_menu():
 
         diameter_values.append(diameter)
         friction_loss_per_length_values.append(S)
+        
+        app_state.diameter_values = diameter_values  # Store the diameter values in app_state
+        app_state.friction_loss_per_length = friction_loss_per_length_values  # Store the friction loss values in app_state
 
         
     # Create labels for the results
