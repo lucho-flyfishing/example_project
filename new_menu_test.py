@@ -24,6 +24,7 @@ class AppState:
         self.filename = StringVar(root)  # Store the filename
         self.diameter_values = []  # Store the diameter value
         self.friction_loss_per_length = []  # Store the friction loss value
+        self.pressure = IntVar(root)
 
 W = Tk()
 W.title('Dimensionamiento de Ductos')
@@ -189,8 +190,9 @@ def corrections_menu():
             row_number = str(i + 1)
             flowrate = flowrate_values[i] if i < len(flowrate_values) else ''
             length = length_values[i] if i < len(length_values) else ''
-            pressure = app_state.get_alt.get() if hasattr(app_state.get_alt, "get") else app_state.get_alt
-            velocity = 2.48
+            pressure = f"{app_state.pressure.get():.2f}" if hasattr(app_state.pressure, "get") else app_state.pressure
+            temperature = f"{app_state.get_temp.get():.2f}" if hasattr(app_state.get_temp, "get") else app_state.get_temp
+            velocity = f"{app_state.get_velocity.get():.2f}" if hasattr(app_state.get_velocity, "get") else app_state.get_velocity
             diameter = diameter_values[i] if i < len(diameter_values) else ''
             friction_loss = friction_loss_per_length_values[i] if i < len(friction_loss_per_length_values) else ''
             diameter = f"{diameter:.2f}" if diameter != '' else ''
@@ -273,6 +275,8 @@ def result1_menu():
     H = float(app_state.get_alt)
     # Calculate pressure
     pressure = calculate_pressure(H)
+    
+    app_state.pressure = pressure  # Store the pressure value in app_state
     
     #variables to get the values of the flowrate and length
     flowrate_values = app_state.flowrate_entries
@@ -512,6 +516,9 @@ def velocity_entry_menu():
 
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
+    
+    note_lbl = Label(bottom_frame, text='El valor ingresado se va a usar para el calculo en todos los ramales', font=('Arial', 16), bg='gray12', fg='gray80')
+    note_lbl.pack(side='top', pady=1)
     
     back_btn = Button(bottom_frame, text='Volver', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=velocity_range_menu)
     back_btn.pack(side='left', padx=10, pady=10)    
