@@ -26,34 +26,42 @@ W.config(bg='gray12')
 app_state = AppState(W)
 
 
-    #THIS ARE THE CALCULATIONS FOR FRICTION LOSSES USING EQUAL FRICTION METHOD
-    #rho = 1.2  # Density of air in kg/m³
-    #mu = 1.81e-5  # Dynamic viscosity of air in kg/(m·s)
-    #nu = mu / rho  # Kinematic viscosity in m²/s
-    #D = 0.6  # Diameter in meters
-    #L = 30  # Length in meters
-    #V = 8.85  # Velocity in m/s
-    #eps = 0.00009 #roughness of the duct in meters for galvanized steel 
-    #Re = (rho * V * D) / mu  # Reynolds number
+
+######################################
+
+def sketch_menu():
+    # Clear the window
+    for widget in W.winfo_children():
+        widget.destroy()
+
+    # Create a frame for the top section
+    top_frame = Frame(W, bg='gray12')
+    top_frame.pack(side='top', fill='x')
+
+    # Create a label for the sketch menu
+    sketch_lbl = Label(top_frame, text='Sketch Menu', font=('Arial', 24, 'bold'), bg='gray12', fg='gray80')
+    sketch_lbl.pack(side='top', pady=1)
+
+    # Create a middle frame for the sketch options
+    middle_frame = Frame(W, bg='gray12')
+    middle_frame.pack(expand=True)
+
+    max_V_main = Label(middle_frame, text='Velocidad máxima del aire en el ramal principal', font=('Arial', 20, 'bold'), bg='gray12', fg='gray80')
+    max_V_main.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
     
+    max_V_branch = Label(middle_frame, text='Velocidad máxima del aire en los ramales', font=('Arial', 20, 'bold'), bg='gray12', fg='gray80')
+    max_V_branch.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
     
+    # Create a frame for the bottom section
+    bottom_frame = Frame(W, bg='gray12')
+    bottom_frame.pack(side='bottom', fill='x')
     
-    # If statement for turbulent or laminar flow
-    #if Re > 2000:
-        #f = 1 / (-1.8 * math.log10(6.9 / Re + (eps / (3.7 * D)) ** 1.11)) ** 2 #turbulent flow
-    #else:
-        #f = 64/Re #laminar flow
-    
-    #deltaP = f * (L/D) * (rho * V**2) / 2
-    #print(f"Reynolds number: {Re}")
-    #print(f"Friction factor: {f}")
-    #print(f"Pressure loss due to friction: {deltaP} Pa")
+    back_btn = Button(bottom_frame, text='Volver al menu principal', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=main_menu)
+    back_btn.pack(side='top', pady=10)
 
 
 
-
-
-
+######################################
 def main_menu():
     # Clear the window
     for widget in W.winfo_children():
@@ -76,6 +84,5 @@ def main_menu():
     lbl5.pack(side='bottom', pady=1)
 
 main_menu()
-
 
 W.mainloop()
