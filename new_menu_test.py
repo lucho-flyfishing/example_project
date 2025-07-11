@@ -18,7 +18,7 @@ class AppState:
         self.main_branch = IntVar(root)  # Store the main branch number
         self.flowrate_entries = []  # Stores flow rates
         self.length_entries = []  # Stores lengths
-        self.get_velocity = IntVar(root)
+        self.velocity_entries = []  # Stores velocities
         self.get_alt = IntVar(root)
         self.get_temp = IntVar(root)
         self.filename = StringVar(root)  # Store the filename
@@ -192,7 +192,7 @@ def corrections_menu():
             length = length_values[i] if i < len(length_values) else ''
             pressure = f"{app_state.pressure.get():.2f}" if hasattr(app_state.pressure, "get") else app_state.pressure
             temperature = f"{app_state.get_temp.get():.2f}" if hasattr(app_state.get_temp, "get") else app_state.get_temp
-            velocity = f"{app_state.get_velocity.get():.2f}" if hasattr(app_state.get_velocity, "get") else app_state.get_velocity
+            velocity = f"{app_state.velocity_entries[i]:.2f}" if i < len(app_state.velocity_entries) else ''
             diameter = diameter_values[i] if i < len(diameter_values) else ''
             friction_loss = friction_loss_per_length_values[i] if i < len(friction_loss_per_length_values) else ''
             diameter = f"{diameter:.2f}" if diameter != '' else ''
@@ -277,7 +277,8 @@ def result1_menu():
     pressure = calculate_pressure(H)
     
     app_state.pressure = pressure  # Store the pressure value in app_state
-    
+    app_state.pressure = round(pressure, 2)
+
     #variables to get the values of the flowrate and length
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
@@ -297,7 +298,7 @@ def result1_menu():
         length_value= length_values[i]  # still available if you need it
 
         if selected == 1:
-            velocity =  float(app_state.get_velocity)# m/s
+            velocity =  float(app_state.velocity_entries[i])# m/s
             Q = flow_value / 1000  # L/s → m³/s
             diameter_m = math.sqrt((4 * Q) / (math.pi * velocity)) # m
             diameter = diameter_m * 1000  # m → mm
@@ -306,7 +307,7 @@ def result1_menu():
             S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
 
         elif selected == 2:
-            velocity = float(app_state.get_velocity)  # m/s
+            velocity = float(app_state.velocity_entries[i])  # m/s
             Q = flow_value  # m³/s
             diameter_m = math.sqrt((4 * Q) / (math.pi * velocity)) # m
             diameter = diameter_m * 1000  # m → mm
@@ -314,7 +315,7 @@ def result1_menu():
             S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
 
         elif selected == 3:
-            velocity = float(app_state.get_velocity) * 196.85  # m/s → fpm
+            velocity = float(app_state.velocity_entries[i]) * 196.85  # m/s → fpm
             Q_ft3s = flow_value / 60  # CFM → ft³/s
             A_ft2 = Q_ft3s / velocity  # fpm
             D_ft = math.sqrt((4 * A_ft2) / math.pi) # ft
@@ -375,7 +376,7 @@ def result1_menu():
             branch_pressure_values.grid(row=i+1, column=4, padx=2, pady=2, sticky="nsew")
     
     for i in range(rows):
-            velocity_value = float(app_state.get_velocity)  # m/s
+            velocity_value = float(app_state.velocity_entries[i])  # m/s
             branch_velocity_values = Label(middle_frame, text=f"{velocity_value:.2f}", width=7, height=1,
                             borderwidth=2, relief="solid", font=('Arial', 15), bg='gray12', fg='gray80')
             branch_velocity_values.grid(row=i+1, column=5, padx=2, pady=2, sticky="nsew")
@@ -468,25 +469,68 @@ def result1_menu():
     next_btn.pack(side='right' , padx= 10, pady=10)
     
 ##################################################################################################################################
+def save_velocity_data():
+    global velocity_entries
 
+    velocities = []
+
+    for i in range(app_state.duct_number.get()):
+        try:
+            velocity = float(velocity_entries[i].get())
+            velocities.append(velocity)
+        except ValueError:
+            print(f"Error: Ingrese valores válidos en el Ramal {i+1}")
+
+    app_state.velocity_entries = velocities
+    print("Velocidades guardadas:", velocities)
+    
 def velocity_entry_menu():
     #clear the current window
+    """Switches to the velocity entry menu where users can input the flow velocity for each branch."""
+    global velocity_entries
     for widget in W.winfo_children():
         widget.destroy()
     
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    velocity_lbl = Label(top_frame, text='Ingrese la velocidad del flujo de aire en el ducto principal', font=('Arial', 24), bg='gray12', fg='gray80')
+    velocity_lbl = Label(top_frame, text='Ingrese la velocidad del flujo de aire en el ducto principal y los ramales', font=('Arial', 24), bg='gray12', fg='gray80')
     velocity_lbl.pack(side='top', pady=1)
     
     middle_frame = Frame(W, bg='gray12')
     middle_frame.pack(expand=True)
     
+    # Get the selected option and duct number from app_state
+    selected = app_state.selected_option.get()
+    duct_number = app_state.duct_number.get()
+    
     # Entry for velocity
-    velocity_entry = Entry(middle_frame, font=('Arial', 15), bg='white', fg='gray', relief='solid', bd=2, highlightthickness=2, highlightbackground='black')
-    velocity_entry.grid(row=0, column=1)
-    # Placeholder text
+    app_state.velocity_entries = []  # Reset stored values
+    
+    # Header Labels
+    headers = {
+        1: ("velocidad (m/s)"),
+        2: ("velocidad (m/s)"),
+        3: ("velocidad (fpm)")
+    }
+    
+    if selected in headers:
+        Label(middle_frame, text=headers[selected][0], font=('Arial', 16,'bold'), bg='grey12', fg='grey80').grid(row=0, column=1, padx=5, pady=5)
+
+
+    velocity_entries = []
+
+    for i in range(duct_number):
+        if app_state.main_branch.get() == i + 1:
+            Label(middle_frame, text=f'Ramal {i+1} (Principal):', font=('Arial', 14), bg='grey12', fg='red3').grid(row=i+1, column=0, padx=3, pady=1)
+        else:
+            Label(middle_frame, text=f'Ramal {i+1}:', font=('Arial', 14), bg='grey12', fg='white').grid(row=i+1, column=0, padx=3, pady=1)
+
+        velocity_entry = Entry(middle_frame, font=('Arial', 12), bg='grey40', width=10)
+        velocity_entry.grid(row=i+1, column=1, padx=5, pady=1)
+        velocity_entries.append(velocity_entry)
+
+        # Placeholder text
     placeholder = 'Escribe aquí...'
     velocity_entry.insert(0, placeholder)
 
@@ -507,13 +551,7 @@ def velocity_entry_menu():
 
     # Auto-focus for caret visibility
     velocity_entry.focus()
-
-    # Function to get values from entry fields
-    def get_velocity():
-        app_state.get_velocity = velocity_entry.get()
-        print(f"Velocity: {app_state.get_velocity}")  # Print values to check
-
-
+    
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
     
@@ -524,7 +562,7 @@ def velocity_entry_menu():
     back_btn.pack(side='left', padx=10, pady=10)    
     
     #Button to sumbit the velocity and go to next menu
-    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [get_velocity(), result1_menu()])
+    next_btn = Button(bottom_frame, text='Siguiente', bg='DarkSlateGray', fg='black', relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4', font=('Arial', 20, 'bold'), command=lambda: [save_velocity_data(), result1_menu()])
     next_btn.pack(side='right', padx=10, pady=10)
 
 ###################################################################################################################################
@@ -772,7 +810,7 @@ def save_branch_data():
 # Function to create the menu for branch features
 def branches_features():
     """Create a menu with input fields for flow rate and length of each branch."""
-    global middle_frame, flowrate_entries, length_entries
+    global flowrate_entries, length_entries
     for widget in W.winfo_children():
         widget.destroy()
 
