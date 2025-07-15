@@ -103,11 +103,45 @@ def roughness_menu():
     top_frame = Frame(W, bg='gray12')
     top_frame.pack(side='top', fill='x')
     
-    middle_frame = Frame(W, bg='gray12')
-    middle_frame.pack(expand=True)
-    
     roughness_lbl = Label(top_frame, text='Hasta ahora se ha trabajado con una rugosidad #### \n Seleccione el material del ducto', font=('Arial', 25), bg='gray12', fg='gray80')
     roughness_lbl.pack(side='top', pady=1)
+    
+    middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
+    middle_frame.pack(expand=True)
+    
+    #selected =  app_state.selected_option.get()
+    #rows_number = app_state.duct_number.get()
+
+    #if selected == 3:
+        
+        #table1_main_duct_fpm = [
+            #[45, 3503.94, 5000.0],   # In shaft or above drywall ceiling
+            #[35, 2500.0, 3503.94],
+            #[25, 1692.91, 2500.0],
+            #[45, 2500.0, 4507.87],   # Above suspended acoustic ceiling
+            #[35, 1751.97, 2992.13],
+            #[25, 1200.79, 2007.87],
+            #[45, 2007.87, 3897.64],  # Duct located within occupied space
+            #[35, 1456.69, 2598.43],
+            #[25, 944.88, 1692.91]
+        #]
+        
+        #for i, row in enumerate(table1_main_duct_fpm):
+            #for j, value in enumerate(row):
+                #label = Label(middle_frame, text=value, borderwidth=1, relief="solid", width=10, height=1)
+                #label.grid(row=i+3, column=j+1, padx=2, pady=2)
+
+    title_lbl = Label(middle_frame, text='Factores de rugosidad para el material del ducto', font=('Arial', 20, 'bold'),  borderwidth=2, relief="solid",bg='gray12', fg='gray80')
+    title_lbl.grid(row=0, column=0, columnspan=3, padx=5, pady=3, sticky="nsew")
+    
+    material_lbl = Label(middle_frame, text='Material', font=('Arial', 15), bg='gray12', fg='gray80')
+    material_lbl.grid(row=1, column=0, padx=5, pady=3, sticky="nsew")
+    
+    category_lbl = Label(middle_frame, text='Categoría', font=('Arial', 15), bg='gray12', fg='gray80')
+    category_lbl.grid(row=1, column=1, padx=5, pady=3, sticky="nsew")
+    
+    roughness_lbl = Label(middle_frame, text='Factor de Rugosidad (mm)', font=('Arial', 15), bg='gray12', fg='gray80')
+    roughness_lbl.grid(row=1, column=2, padx=5, pady=3, sticky="nsew")
     
     bottom_frame = Frame(W, bg='gray12')
     bottom_frame.pack(side='bottom', fill='x')
