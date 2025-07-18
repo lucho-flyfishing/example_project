@@ -25,6 +25,8 @@ class AppState:
         self.diameter_values = []  # Store the diameter value
         self.friction_loss_per_length = []  # Store the friction loss value
         self.pressure = IntVar(root)
+        self.density = None
+        self.viscosity = None
 
 W = Tk()
 W.title('Dimensionamiento de Ductos')
@@ -142,7 +144,7 @@ def roughness_menu():
 
         for i, row in enumerate(table1_roughness_imperial):
             for j, value in enumerate(row):
-                label = Label(middle_frame, text=value, borderwidth=1, relief="solid", width=10, height=1)
+                label = Label(middle_frame, text=value, borderwidth=1, relief="solid", width=16, height=1)
                 label.grid(row=i+2, column=j+1, padx=2, pady=2)
     
 
@@ -172,7 +174,7 @@ def roughness_menu():
         for i, row in enumerate(table2_roughness):
             for j, value in enumerate(row):
                 label = Label(middle_frame, text=value, borderwidth=1, relief="solid", width=16, height=1)
-                label.grid(row=i+2, column=j+1, padx=3, pady=2)
+                label.grid(row=i+2, column=j+1, padx=2, pady=2)
     
         roughness_lbl = Label(middle_frame, text='Factor de Rugosidad (mm)', font=('Arial', 15), bg='gray12', fg='gray80')
         roughness_lbl.grid(row=1, column=2, padx=5, pady=3, sticky="nsew")
@@ -318,53 +320,99 @@ def result1_menu():
     middle_frame = Frame(W, bg='gray12',highlightbackground="red", highlightthickness=2)
     middle_frame.pack(expand=True)
     
-    #Get values from the entry fields
-    
+    # Get values from the entry fields
     selected =  app_state.selected_option.get()
     rows_number = app_state.duct_number.get()
-    T = float(app_state.get_temp)
-    
-    print(f"Selected option: {selected}")
-    print(f"Duct number: {rows_number}")
+
+    # Set the number of rows and columns for the results table
     rows, cols = rows_number, 6
+
+    T = float(app_state.get_temp)
+
+    # Calculate viscosity based on temperature
+    if selected == 1 or selected == 2:
+
+        T_K = T + 273.15  # Convert to Kelvin
+        mu_0 = 1.716e-5  # Reference viscosity in Pa·s
+        T_0 = 273.15  # Reference temperature in K
+        Su = 111  # Sutherland's constant in K
+
+        mu = mu_0 * (T_K / T_0) ** 1.5 * (T_0 + Su) / (T_K + Su)  # Sutherland's formula for air viscosity
+        viscosity = mu  # Store the viscosity value in app_state
+        app_state.viscosity = viscosity
+
+    else:
+
+        # Convert °F to K
+        T_K= (T - 32) * 5/9 + 273.1
+        T_K= round(T_K, 2)
+
+        # Sutherland's constants (SI base units)
+        mu0_si = 1.716e-5     # Pa·s
+        T0 = 273.15           # K
+        Su = 111.0            # Sutherland's constant for air, K
+
+        # Sutherland’s formula (viscosity in Pa·s)
+        mu_si = mu0_si * ((T_K / T0) ** 1.5) * (T0 + Su) / (T_K + Su)
+
+        # Convert Pa·s to lb·s/ft²
+        mu_imperial = mu_si * 0.02088543423  # Conversion factor
+        viscosity = mu_imperial  # Store the viscosity value in app_state
+        app_state.viscosity = viscosity
+
+
+    # Calculate pressure based on altitude
+    H = float(app_state.get_alt) # Convert altitude to float
+
+    # Constants
+    P0 = 101325  # Pa
+    factor = 0.0000225577
+    exponent = 5.2559
+
+    # Calculate pressure in Pascals
+    pressure_pa = P0 * (1 - factor * H) ** exponent
+
+    # Convert to appropriate units based on selection
+    if selected == 1 or selected == 2:
+        pressure = round(pressure_pa, 2)  # Pa
+    elif selected == 3:
+        pressure = round(pressure_pa * 0.0001450377, 2)  # psi
+    else:
+        pressure = None
+
+    # Store the result
+    app_state.pressure = pressure
     
-    #function that calculates the pressure at a given altitude
-    def calculate_pressure(H):
-        # Constants
-        P0 = 101325  # Sea-level standard atmospheric pressure (Pa)
-        factor = 0.0000225577  # Altitude factor
-        exponent = 5.2559  # Exponent for the equation
     
-        # Pressure formula
-        P = P0 * (1 - factor * H) ** exponent
+    #calculate density based on temperature and pressure
     
-        return P
+    if selected == 1 or selected == 2:
+        T_K = T + 273.15  # °C → K
+        R = 287.05  # J/(kg·K) for dry air
+        density = pressure / (R * T_K)  # kg/m³
+
+    elif selected == 3:
+        T_R = T + 459.67  # °F → °R
+        pressure_lbft2 = pressure * 144  # psi → lb/ft²
+        R = 53.35  # ft·lb/(lb·°R) for dry air
+        density = pressure_lbft2 / (R * T_R)  # lb/ft³
         
-    # set the altitude to the value of the entry
-    H = float(app_state.get_alt)
-    # Calculate pressure
-    pressure = calculate_pressure(H)
-    
-    app_state.pressure = pressure  # Store the pressure value in app_state
-    app_state.pressure = round(pressure, 2)
+    #store the density value in app_state
+    app_state.density = density
 
     #variables to get the values of the flowrate and length
     flowrate_values = app_state.flowrate_entries
     length_values = app_state.length_entries
-    
+
 
     # lists to store the results of diameter and friction loss per length
     diameter_values = []
     friction_loss_per_length_values = []
-
-    density = 1.2  # kg/m³ at sea level (standard air)
-    f = 0.0275  # typical roughness friction factor for ducts
-
-    # Loop through each branch to calculate diameter and friction loss
-
-    for i in range(len(flowrate_values)):
+    
+    
+    for i in range(len(flowrate_values)): # Loop through each branch to calculate diameter and friction loss
         flow_value = flowrate_values[i]
-        length_value= length_values[i]  # still available if you need it
+        length_value = length_values[i]
 
         if selected == 1:
             velocity =  float(app_state.velocity_entries[i])# m/s
@@ -372,7 +420,14 @@ def result1_menu():
             diameter_m = math.sqrt((4 * Q) / (math.pi * velocity)) # m
             diameter = diameter_m * 1000  # m → mm
             
-            #f = 0.25 / [ math.log10( (ε / (3.7 * D)) + (5.74 / Re^0.9) ) ]^2  # friction factor for turbulent flow
+            epsilon = 1.5e-7  # roughness for typical duct materials in m
+            
+            D = diameter_m
+            Re = (density * velocity * D) / viscosity
+
+            # Friction factor (turbulent, Swamee-Jain approximation)
+            f = 0.25 / ( math.log10( (epsilon / (3.7 * D)) + (5.74 / Re**0.9) ) )**2  # friction factor for turbulent flow
+
             S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
 
         elif selected == 2:
@@ -380,22 +435,40 @@ def result1_menu():
             Q = flow_value  # m³/s
             diameter_m = math.sqrt((4 * Q) / (math.pi * velocity)) # m
             diameter = diameter_m * 1000  # m → mm
+            
+            epsilon = 1.5e-7  # roughness for typical duct materials in m
+            
+            D = diameter_m # already in m
+            Re = (density * velocity * D) / viscosity # Reynolds number
 
-            S = f * (1 / diameter_m) * (density * velocity ** 2) / 2  # Pa per meter
+            # Friction factor (turbulent, Swamee-Jain approximation)
+            f = 0.25 / ( math.log10( (epsilon / (3.7 * D)) + (5.74 / Re**0.9) ) )**2  # friction factor for turbulent flow
+
+            # Friction loss per unit length
+            S = f * (1 / D) * (density * velocity ** 2) / 2  # Pa per meter
 
         elif selected == 3:
-            velocity = float(app_state.velocity_entries[i]) * 196.85  # m/s → fpm
+            velocity = float(app_state.velocity_entries[i])  # fpm (feet per minute)
             Q_ft3s = flow_value / 60  # CFM → ft³/s
-            A_ft2 = Q_ft3s / velocity  # fpm
-            D_ft = math.sqrt((4 * A_ft2) / math.pi) # ft
+            D_ft = math.sqrt((4 * Q_ft3s) / (math.pi * velocity))  # ft
             diameter_in = D_ft * 12  # ft → in
             diameter = diameter_in
 
-            density_ip = 0.075  # lb/ft³ standard air
-            f_ip = 0.0275   # typical roughness friction factor for ducts in imperial units
+            epsilon_in = 0.0005  # typical roughness in inches
+            epsilon_ft = epsilon_in / 12  # convert in → ft
+            density_ip = app_state.density  # lb/ft³
+            viscosity_ip = app_state.viscosity  # lb/ft·s
 
-            S_ip = f_ip * (1 / D_ft) * (density_ip * velocity ** 2) / 2  # lb/ft² per ft
-            S = S_ip / 5.202  # convert lb/ft² to in.wg per ft
+            D = D_ft  # already in ft
+            V_ft_s = velocity / 60  # convert fpm → ft/s
+            Re = (density_ip * V_ft_s * D) / viscosity_ip  # Reynolds number
+
+            # Friction factor (turbulent, Swamee-Jain approximation)
+            f_ip = 0.25 / (math.log10((epsilon_ft / (3.7 * D)) + (5.74 / Re**0.9))) ** 2
+
+            # Friction loss per unit length
+            S_ip = f_ip * (1 / D) * (density_ip * V_ft_s ** 2) / 2  # lb/ft² per ft
+            S = S_ip / 5.202  # convert lb/ft² → in.wg per ft
 
         else:
             diameter = None
@@ -516,7 +589,7 @@ def result1_menu():
         temperatue_main = Label(middle_frame, text='Temperatura (F°)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         temperatue_main.grid(row=0, column=3)
         
-        preasure_main = Label(middle_frame, text='Presión (Pa)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
+        preasure_main = Label(middle_frame, text='Presión (psi)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
         preasure_main.grid(row=0, column=4)
         
         velocity_main = Label(middle_frame, text='Velocidad (fpm)', font=('Arial', 15), highlightbackground="red", highlightthickness=2, bg='gray12', fg='gray80')
