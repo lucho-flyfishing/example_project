@@ -1,6 +1,6 @@
 from tkinter import Button, Label
 
-def main_menu(W):
+def start_menu(W):
     # Clear the window
     for widget in W.winfo_children():
         widget.destroy()
@@ -26,10 +26,10 @@ def main_menu(W):
     # ✅ Local import avoids circular import
     from menus.file_name_menu import file_name_menu  
     start_button = Button(W, text='Iniciar',
-                        bg='DodgerBlue4', fg='dark orange',
+                        bg='White', fg='black',
                         relief='raised',
                         activebackground='DodgerBlue2',
-                        activeforeground='DarkerOrange',
+                        activeforeground='OrangeRed2',
                         font=('Arial', 24, 'bold'),
                         command=lambda: file_name_menu(W))
     start_button.pack(pady=30)
