@@ -1,9 +1,7 @@
 from tkinter import Button, Label, Entry, Frame
-from menus.start_menu import start_menu
-#from menus.duct_number_menu import duct_number_menu
 from app_state import app_state
 
-def file_name_menu(W):
+def file_name_menu(W, go_back, go_next):
     # Clear the window
     for widget in W.winfo_children():
         widget.destroy()
@@ -71,14 +69,14 @@ def file_name_menu(W):
                     activebackground='DodgerBlue2', 
                     activeforeground='OrangeRed2', 
                     font=('Arial', 20, 'bold'),
-                    command=lambda: start_menu(W))
+                    command=lambda: go_back(W))
     back_btn.pack(side='left', padx=10, pady=10)
 
-    #next_btn = Button(bottom_frame, text='Siguiente',
-                    #bg='DarkSlateGray', fg='black',
-                    #relief='raised',
-                    #activebackground='SlateGray',
-                    #activeforeground='white',
-                    #highlightbackground='brown4',
-                    #font=('Arial', 20, 'bold'), command=duct_number_menu)
-    #next_btn.pack(side='right' , padx= 10, pady=10)
+    next_btn = Button(bottom_frame, text='Siguiente',
+                    bg='White', fg='black',
+                    relief='raised',
+                    activebackground='DodgerBlue2',
+                    activeforeground='OrangeRed2',
+                    font=('Arial', 20, 'bold'),
+                    command=lambda: go_next(W))
+    next_btn.pack(side='right' , padx= 10, pady=10)

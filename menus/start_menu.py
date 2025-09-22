@@ -1,6 +1,7 @@
 from tkinter import Button, Label
+from app_state import app_state
 
-def start_menu(W):
+def start_menu(W, go_next):
     # Clear the window
     for widget in W.winfo_children():
         widget.destroy()
@@ -31,7 +32,7 @@ def start_menu(W):
                         activebackground='DodgerBlue2',
                         activeforeground='OrangeRed2',
                         font=('Arial', 24, 'bold'),
-                        command=lambda: file_name_menu(W))
+                        command=lambda: go_next(W))
     start_button.pack(pady=30)
 
     lbl5 = Label(W, text='Desarrollado en la Universidad del Valle por Luis Jimenez',
