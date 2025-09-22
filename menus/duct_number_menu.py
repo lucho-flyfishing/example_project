@@ -7,38 +7,39 @@ def duct_number_menu(W, go_back, go_next):
         widget.destroy()
     
     #top frame for the menu title
-    top_frame = Frame(W, bg='gray12')
+    top_frame = Frame(W, bg='gray5')
     top_frame.pack(side='top', fill='x')
     
     
     # Title for the duct information menu
-    duct_info_tittle = Label(top_frame, text='Complete la información sobre los ramales \
-                            del sistema, luego presione " Siguiente".', 
-                            font=('Arial', 30, 'bold'), bg='gray12', fg='gray80')
+    duct_info_tittle = Label(top_frame, text='Complete la información sobre los ramales'
+                            'del sistema, luego presione " Siguiente".', 
+                            font=('Arial', 30, 'bold'), bg='gray5', fg='gray60')
     duct_info_tittle.pack(pady=10)
     
     # Entry for branch number and main branch
     # Middle frame to hold entry fields
-    middle_frame = Frame(W, bg='gray12')
+    middle_frame = Frame(W, bg='gray5')
     middle_frame.pack(expand=True)
 
     duct_number_lbl = Label(middle_frame, text='Introduzca la cantidad de ramales del ducto. ',
-                            font=('Arial', 26), bg='gray12', fg='gray80')
+                            font=('Arial', 26), bg='gray5', fg='gray60')
     duct_number_lbl.pack(pady=1)
 
     duct_number_entry = Entry(middle_frame, font=('Arial', 15),
-                            bg='white', fg='gray', 
-                            relief='solid', bd=2, highlightthickness=2,
+                            bg='white', fg='gray5', 
+                            relief='solid', bd=2, 
+                            highlightthickness=2,
                             highlightbackground='black')
     duct_number_entry.pack(pady=20, ipady=5, ipadx=10)
 
-    main_branch_lbl = Label(middle_frame, text='Introduzca el número de ramal que va \
-                            a usar \n como ducto principal:', 
-                            font=('Arial', 26), bg='gray12', fg='gray80')
+    main_branch_lbl = Label(middle_frame, text='Introduzca el número de ramal que va '
+                            'a usar \n como ducto principal:', 
+                            font=('Arial', 26), bg='gray5', fg='gray60')
     main_branch_lbl.pack(pady=5)
 
     main_branch_entry = Entry(middle_frame, font=('Arial', 15),
-                            bg='white', fg='gray',
+                            bg='white', fg='gray5',
                             relief='solid', bd=2,
                             highlightthickness=2, 
                             highlightbackground='black')

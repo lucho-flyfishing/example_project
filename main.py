@@ -11,12 +11,13 @@ def main():
     # Create the single root window
     W = Tk()
     W.geometry("1200x700")
-    W.configure(bg="gray12")
+    W.configure(bg="gray5")
 
     # Init app_state variables
     app_state.selected_option = StringVar(W)
     app_state.duct_number = IntVar(W)
     app_state.filename = StringVar(W)
+    app_state.main_branch = IntVar(W)
 
     # Define navigation
     def go_to_start(W):

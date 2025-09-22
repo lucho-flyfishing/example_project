@@ -6,6 +6,7 @@ class AppState:
         self.selected_option = None
         self.duct_number = None
         self.filename = None
+        self.main_branch = None
         # add more shared variables here later (plain Python types)
 
 # Create one global instance to import everywhere
