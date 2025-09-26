@@ -3,10 +3,10 @@
 
 class AppState:
     def __init__(self):
-        self.selected_option = None
-        self.duct_number = None
         self.filename = None
+        self.duct_number = None
         self.main_branch = None
+        self.selected_option = None
         # add more shared variables here later (plain Python types)
 
 # Create one global instance to import everywhere

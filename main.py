@@ -5,6 +5,7 @@ from menus.start_menu import start_menu
 from menus.file_name_menu import file_name_menu
 from menus.duct_number_menu import duct_number_menu
 from menus.units_menu import units_menu
+from menus.branch_features_menu import branch_features_menu
 
 
 def main():
@@ -18,6 +19,7 @@ def main():
     app_state.duct_number = IntVar(W)
     app_state.filename = StringVar(W)
     app_state.main_branch = IntVar(W)
+    app_state.selected_option = IntVar(W)
 
     # Define navigation
     def go_to_start(W):
@@ -30,7 +32,11 @@ def main():
         duct_number_menu(W, go_back=go_to_file_name, go_next=go_to_units)
 
     def go_to_units(W):
-        units_menu(W, go_back=go_to_duct_number)
+        units_menu(W, go_back=go_to_duct_number, go_next=go_to_branch_features)
+        
+    def go_to_branch_features(W):
+        branch_features_menu(W, go_back=go_to_units)
+        
 
     # Start with Start Menu
     go_to_start(W)

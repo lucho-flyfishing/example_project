@@ -1148,15 +1148,15 @@ def units_menu():
 
     # Create buttons and store them in a list
     buttons = [
-        Button(middle_frame, text='1. L/s    :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='1. L/s    :   Pa/m   : mm : m/s : m ', bg='White', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(1)),
 
-        Button(middle_frame, text='2. m³/s :   Pa/m   : mm : m/s : m ', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='2. m³/s :   Pa/m   : mm : m/s : m ', bg='White', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(2)),
 
-        Button(middle_frame, text='3. cfm    : inH20/ft : in : fpm : ft', bg='DarkSlateGray', fg='black',
+        Button(middle_frame, text='3. cfm    : inH20/ft : in : fpm : ft', bg='White', fg='black',
                 relief='raised', activebackground='SlateGray', activeforeground='white', highlightbackground='brown4',
                 font=('Arial', 20, 'bold'), command=lambda: select_option(3))  
     ]
