@@ -20,6 +20,7 @@ def main():
     app_state.filename = StringVar(W)
     app_state.main_branch = IntVar(W)
     app_state.selected_option = IntVar(W)
+    
 
     # Define navigation
     def go_to_start(W):

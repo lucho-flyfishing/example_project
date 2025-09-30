@@ -7,6 +7,8 @@ class AppState:
         self.duct_number = None
         self.main_branch = None
         self.selected_option = None
+        self.flowrate_entries = []
+        self.length_entries = []
         # add more shared variables here later (plain Python types)
 
 # Create one global instance to import everywhere
